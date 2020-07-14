@@ -1,0 +1,32 @@
+{
+  "name": "prismarine-template",
+  "version": "1.0.0",
+  "description": "A template repository to make it easy to create new prismarine repo",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose",
+    "pretest": "npm run lint && require-self",
+    "prepare": "npm install require-self && require-self",
+    "lint": "standard",
+    "fix": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrismarineJS/prismarine-template.git"
+  },
+  "keywords": [
+    "prismarine",
+    "template"
+  ],
+  "author": "Romain Beaumont",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PrismarineJS/prismarine-template/issues"
+  },
+  "homepage": "https://github.com/PrismarineJS/prismarine-template#readme",
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "require-self": "^0.2.3",
+    "standard": "^14.3.4"
+  }
+}
