@@ -1,3 +1,4 @@
-const template = require('prismarine-template')
+const ChatMessage = require('prismarine-chat')('1.16')
 
-template.helloWorld()
+const msg = new ChatMessage({ text: 'Example chat message' })
+console.log(msg.toString()) // Example chat message
