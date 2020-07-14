@@ -283,7 +283,7 @@ class ChatMessage {
     return message
   }
 
-  toAnsi (lang) {
+  toAnsi (lang = defaultLang) {
     const codes = {
       '§0': '\u001b[30m',
       '§1': '\u001b[34m',
