@@ -19,7 +19,8 @@ console.log(msg.toString()) // Example chat message
 
 ```
 ## API
-### chat.ChatMessage (base class)
+### ChatMessage(message)
+* `message` - Can be either text or a minecraft chat JSON object
 
 #### chat.toString([lang])
 
