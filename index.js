@@ -169,7 +169,11 @@ class ChatMessage {
             content = this.hoverEvent.value
           }
         }
-        this.hoverEvent.value = mojangson.parse(content)
+        try {
+          this.hoverEvent.value = mojangson.parse(content)
+        } catch (err) {
+
+        }
       }
     }
   }
