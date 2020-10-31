@@ -27,7 +27,7 @@
   "devDependencies": {
     "jest": "^26.1.0",
     "require-self": "^0.2.3",
-    "standard": "^15.0.0"
+    "standard": "^16.0.1"
   },
   "dependencies": {
     "minecraft-data": "^2.62.1",

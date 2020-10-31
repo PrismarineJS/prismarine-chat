@@ -9,7 +9,7 @@ function loader (mcVersion) {
   return ChatMessage
 }
 
-var defaultLang
+let defaultLang
 
 /**
  * ChatMessage Constructor
