@@ -19,8 +19,9 @@ console.log(msg.toString()) // Example chat message
 
 ```
 ## API
-### ChatMessage(message)
+### ChatMessage(message,[displayWarning])
 * `message` - Can be either text or a minecraft chat JSON object
+* `displayWarning` - Display warnings if true, default to false
 
 #### chat.toString([lang])
 
