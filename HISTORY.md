@@ -1,5 +1,9 @@
 ## History
 
+### 1.0.3
+
+* by default hide warnings
+
 ### 1.0.2
 
 * ignore mojangson parsing error
