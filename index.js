@@ -16,7 +16,7 @@ let defaultLang
  * @param {String|Object} message content of ChatMessage
  */
 class ChatMessage {
-  constructor (message, displayWarning=false) {
+  constructor (message, displayWarning = false) {
     if (typeof message === 'string') {
       this.json = { text: message }
     } else if (typeof message === 'object' && !Array.isArray(message)) {
@@ -32,7 +32,7 @@ class ChatMessage {
    * Called by the Constructor
    * @return {void}
    */
-  parse (displayWarning=false) {
+  parse (displayWarning = false) {
     const json = this.json
     // Message scope for callback functions
     // There is EITHER, a text property or a translate property
