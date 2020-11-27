@@ -16,7 +16,7 @@ let defaultLang
  * @param {String|Object} message content of ChatMessage
  */
 class ChatMessage {
-  constructor (message) {
+  constructor (message, displayWarning = false) {
     if (typeof message === 'string') {
       this.json = { text: message }
     } else if (typeof message === 'object' && !Array.isArray(message)) {
@@ -24,7 +24,7 @@ class ChatMessage {
     } else {
       throw new Error('Expected String or Object for Message argument')
     }
-    this.parse()
+    this.parse(displayWarning)
   }
 
   /**
@@ -32,7 +32,7 @@ class ChatMessage {
    * Called by the Constructor
    * @return {void}
    */
-  parse () {
+  parse (displayWarning = false) {
     const json = this.json
     // Message scope for callback functions
     // There is EITHER, a text property or a translate property
@@ -131,7 +131,7 @@ class ChatMessage {
         break
     }
     if (Array.prototype.indexOf && this.color &&
-      supportedColors.indexOf(this.color) === -1) {
+      supportedColors.indexOf(this.color) === -1 && displayWarning) {
       console.warn('ChatMessage parsed with unsupported color', this.color)
     }
 
@@ -140,7 +140,7 @@ class ChatMessage {
       this.clickEvent = json.clickEvent
       if (typeof this.clickEvent.action !== 'string') {
         throw new Error('ClickEvent action missing in ChatMessage')
-      } else if (Array.prototype.indexOf && supportedClick.indexOf(this.clickEvent.action) === -1) {
+      } else if (Array.prototype.indexOf && supportedClick.indexOf(this.clickEvent.action) === -1 && displayWarning) {
         console.warn('ChatMessage parsed with unsupported clickEvent', this.clickEvent.action)
       }
     }
@@ -150,7 +150,7 @@ class ChatMessage {
       this.hoverEvent = json.hoverEvent
       if (typeof this.hoverEvent.action !== 'string') {
         throw new Error('HoverEvent action missing in ChatMessage')
-      } else if (Array.prototype.indexOf && supportedHover.indexOf(this.hoverEvent.action) === -1) {
+      } else if (Array.prototype.indexOf && supportedHover.indexOf(this.hoverEvent.action) === -1 && displayWarning) {
         console.warn('ChatMessage parsed with unsupported hoverEvent', this.hoverEvent.action)
       }
       // Special case
