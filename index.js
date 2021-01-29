@@ -317,6 +317,6 @@ class ChatMessage {
     for (const k in codes) {
       message = message.replace(new RegExp(k, 'g'), codes[k])
     }
-    return message+'\u001b[0m'
+    return message + '\u001b[0m'
   }
 }
