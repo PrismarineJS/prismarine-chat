@@ -13,11 +13,11 @@ let defaultLang
 
 /**
  * ChatMessage Constructor
- * @param {String|Object} message content of ChatMessage
+ * @param {String|Object|Number} message content of ChatMessage
  */
 class ChatMessage {
   constructor (message, displayWarning = false) {
-    if (typeof message === 'string') {
+    if (typeof message === 'string' || typeof message === 'number') {
       this.json = { text: message }
     } else if (typeof message === 'object' && !Array.isArray(message)) {
       this.json = message
@@ -38,7 +38,7 @@ class ChatMessage {
     // There is EITHER, a text property or a translate property
     // If there is no translate property, there is no with property
     // HOWEVER! If there is a translate property, there may not be a with property
-    if (typeof json.text === 'string') {
+    if (typeof json.text === 'string' || typeof json.text === 'number') {
       this.text = json.text
     } else if (typeof json.translate === 'string') {
       this.translate = json.translate
@@ -219,7 +219,7 @@ class ChatMessage {
    */
   toString (lang = defaultLang) {
     let message = ''
-    if (typeof this.text === 'string') message += this.text
+    if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
     else if (this.with) {
       const args = this.with.map(entry => entry.toString(lang))
       const format = lang[this.translate]
@@ -272,7 +272,7 @@ class ChatMessage {
       return codes[code]
     }).join('')
 
-    if (typeof this.text === 'string') message += `${this.text}§r`
+    if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}§r`
     else if (this.with) {
       const args = this.with.map(entry => entry.toMotd(lang))
       const format = lang[this.translate]
