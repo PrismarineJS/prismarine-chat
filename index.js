@@ -13,11 +13,11 @@ let defaultLang
 
 /**
  * ChatMessage Constructor
- * @param {String|Object} message content of ChatMessage
+ * @param {String|Object|Number} message content of ChatMessage
  */
 class ChatMessage {
   constructor (message, displayWarning = false) {
-    if (typeof message === 'string') {
+    if (typeof message === 'string' || typeof message === 'number') {
       this.json = { text: message }
     } else if (typeof message === 'object' && !Array.isArray(message)) {
       this.json = message
