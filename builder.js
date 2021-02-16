@@ -1,4 +1,4 @@
-class baseMessage {
+class BaseMessage {
   setBold (val) { this.bold = val; return this }
   setItalic (val) { this.italic = val; return this }
   setUnderlined (val) { this.underlined = val; return this }
@@ -14,7 +14,7 @@ class baseMessage {
   }
 }
 
-class Message extends baseMessage {
+class Message extends BaseMessage {
   addComponent (val) {
     if (!this.with) this.with = []
     this.with.push(val)
@@ -24,13 +24,13 @@ class Message extends baseMessage {
   setTranslate (val) { this.translate = val; return this }
 }
 
-class MessageComponent extends baseMessage {
+class MessageComponent extends BaseMessage {
   setTranslate (val) { this.translate = val; return this }
-  addComponent (val) {
-    if (!this.with) this.with = []
-    this.with.push(val)
-    return this
-  }
+  // addComponent (val) {
+  //   if (!this.with) this.with = []
+  //   this.with.push(val)
+  //   return this
+  // }
 }
 
 module.exports = (version) => { return { Message, MessageComponent } }
