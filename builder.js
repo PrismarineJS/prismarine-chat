@@ -75,12 +75,17 @@ function convertColorCodes (str) {
         newObj.setUnderlined(true)
       } else if (color === 'italic') {
         newObj.setItalic(true)
-      } else {
+      } else if (color !== 'reset') {
         newObj.setColor(color)
       }
       newObj.setText(text.join(''))
-      if (lastObj != null) lastObj = newObj.addComponent(lastObj)
-      else lastObj = newObj
+      if (lastObj == null) { // if lastObject is null, this has to be the new lastObject
+        lastObj = newObj
+      } else if (color === 'reset') { // if the color is reset, start a new branch
+        lastObj = new Message().setText('').addComponent([newObj, lastObj])
+      } else { // otherwise extend the branch
+        lastObj = newObj.addComponent(lastObj)
+      }
       currString = ''
     }
   }
