@@ -13,16 +13,16 @@ let defaultLang
 
 /**
  * ChatMessage Constructor
- * @param {String|Object|Number} message content of ChatMessage
+ * @param {String|Object|Number|Array} message content of ChatMessage
  */
 class ChatMessage {
   constructor (message, displayWarning = false) {
     if (typeof message === 'string' || typeof message === 'number') {
       this.json = { text: message }
-    } else if (typeof message === 'object' && !Array.isArray(message)) {
+    } else if (typeof message === 'object') {
       this.json = message
     } else {
-      throw new Error('Expected String or Object for Message argument')
+      throw new Error('Expected String, number, array, or object for Message argument')
     }
     this.parse(displayWarning)
   }
@@ -57,6 +57,11 @@ class ChatMessage {
       }
       this.extra = json.extra.map(entry => new ChatMessage(entry))
     }
+
+    if (typeof json === 'object' && Array.isArray(json)) {
+      this.with = json.map(entry => new ChatMessage(entry))
+    }
+
     // Text modifiers
     this.bold = json.bold
     this.italic = json.italic
