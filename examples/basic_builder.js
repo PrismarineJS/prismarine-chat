@@ -1,11 +1,11 @@
-const { ChatMessage, Message } = require('../')('1.16')
+const { MessageBuilder, ChatMessage } = require('../')('1.16')
 
-const exampleMessage = new Message()
+const exampleMessage = new MessageBuilder()
   .setTranslate('chat.type.text')
-  .addComponent(new Message().setText('Notch'))
-  .addComponent([
-    new Message().setColor('red').setBold(true).setText('Hello '),
-    new Message().setColor('white').setItalic(true).setText('world!')
+  .addTranslateInsertion(new MessageBuilder().setText('Notch'))
+  .addTranslateInsertion([
+    new MessageBuilder().setColor('red').setBold(true).setText('Hello '),
+    new MessageBuilder().setColor('white').setItalic(true).setText('world!')
   ])
 
 // json format for direct use in minecraft (ie: chat packet or /tellraw @a OUTPUT)
