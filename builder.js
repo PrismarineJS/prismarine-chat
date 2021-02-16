@@ -60,7 +60,7 @@ function convertColorCodes (str) {
   for (let i = str.length - 1; i > -1; i--) {
     if (str[i] !== '&') currString += str[i]
     else if (str[i] === '&') {
-      const text = currString.split('').reverse()
+      const text = currString.split('').reverse()// reverse
       const color = supportedColors[text.shift()]
       const newObj = new Message()
       if (color === 'obfuscated') {
@@ -80,7 +80,14 @@ function convertColorCodes (str) {
       if (lastObj == null) { // if lastObject is null, this has to be the new lastObject
         lastObj = newObj
       } else if (color === 'reset') { // if the color is reset, start a new branch
-        lastObj = new Message().setText('').addComponent([newObj, lastObj])
+        lastObj = new Message()
+          .setText('')
+          .setBold(false)
+          .setItalic(false)
+          .setStrikethrough(false)
+          .setUnderlined(false)
+          .setColor('white')
+          .addComponent(lastObj)
       } else { // otherwise extend the branch
         lastObj = newObj.addComponent(lastObj)
       }
