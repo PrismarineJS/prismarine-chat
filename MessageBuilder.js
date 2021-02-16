@@ -1,4 +1,4 @@
-class Message {
+class MessageBuilder {
   setBold (val) { this.bold = val; return this }
   setItalic (val) { this.italic = val; return this }
   setUnderlined (val) { this.underlined = val; return this }
