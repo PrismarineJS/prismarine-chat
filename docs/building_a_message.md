@@ -1,4 +1,4 @@
-# Building a message using `Message` & `MessageComponent`
+# Building a message using `MessageBuilder`
 
 ## 1. Pick a format to follow
 ### a. Using a translation format.
