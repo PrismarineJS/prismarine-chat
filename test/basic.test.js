@@ -1,5 +1,5 @@
 /* eslint-env jest */
-const { ChatMessage, Message, convertColorCodes } = require('../')('1.16')
+const { ChatMessage, MessageBuilder, convertColorCodes } = require('../')('1.16')
 
 describe('ChatMessage class works', () => {
   test('Parsing a chat message', () => {
@@ -24,7 +24,7 @@ describe('ChatMessage class works', () => {
 describe('Message builder works', () => {
   test('basic test message', () => {
     // format ingame: "r"
-    const exampleMessage = new Message()
+    const exampleMessage = new MessageBuilder()
       .setColor('red')
       .setBold(true)
       .setItalic(true)
@@ -34,10 +34,10 @@ describe('Message builder works', () => {
   })
   test('basic message with component & translate', () => {
     // format ingame: "<U9G> Hello!"
-    const exampleMessage = new Message()
+    const exampleMessage = new MessageBuilder()
       .setTranslate('chat.type.text')
-      .addTranslateInsertion(new Message().setText('U9G'))
-      .addTranslateInsertion(new Message().setText('Hello!'))
+      .addTranslateInsertion(new MessageBuilder().setText('U9G'))
+      .addTranslateInsertion(new MessageBuilder().setText('Hello!'))
     const correctMessage = { translate: 'chat.type.text', with: [{ text: 'U9G' }, { text: 'Hello!' }] }
     expect(exampleMessage).toMatchObject(correctMessage)
   })
@@ -45,12 +45,12 @@ describe('Message builder works', () => {
 
 describe('using ChatMessage to parse messages from builder', () => {
   test('having an array in a .with', () => {
-    const exampleMessage = new Message()
+    const exampleMessage = new MessageBuilder()
       .setTranslate('chat.type.text')
-      .addTranslateInsertion(new Message().setText('Notch'))
+      .addTranslateInsertion(new MessageBuilder().setText('Notch'))
       .addTranslateInsertion([
-        new Message().setColor('red').setBold(true).setText('Hello '),
-        new Message().setColor('white').setItalic(true).setText('world!')
+        new MessageBuilder().setColor('red').setBold(true).setText('Hello '),
+        new MessageBuilder().setColor('white').setItalic(true).setText('world!')
       ])
     const messageObj = new ChatMessage(exampleMessage)
     const expected = '<Notch\u001b[0m> \u001b[91m\u001b[1mHello \u001b[0m\u001b[97m\u001b[3mworld!\u001b[0m\u001b[0m'
