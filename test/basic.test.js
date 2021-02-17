@@ -10,8 +10,10 @@ describe('ChatMessage class works', () => {
     const msg = new ChatMessage({ italic: true, color: 'gray', translate: 'chat.type.admin', with: [{ insertion: 'ripwhitescrolls', clickEvent: { action: 'suggest_command', value: '/tell ripwhitescrolls ' }, hoverEvent: { action: 'show_entity', contents: { type: 'minecraft:player', id: '9d9e9257-b812-4332-8426-5e9a0d707392', name: { text: 'ripwhitescrolls' } } }, text: 'ripwhitescrolls' }, { translate: 'commands.clear.success.multiple', with: [256, 2] }] })
     // test as a string
     expect(msg.toString()).toEqual('[ripwhitescrolls: Removed 256 items from 2 players]')
+    // test as motd
+    expect(msg.toMotd()).toEqual('§7§o[ripwhitescrolls: Removed 256 items from 2 players]')
     // test as ansi
-    expect(msg.toAnsi()).toEqual('\u001b[37m\u001b[3m[ripwhitescrolls\u001b[0m: Removed 256\u001b[0m items from 2\u001b[0m players]\u001b[0m')
+    expect(msg.toAnsi()).toEqual('\u001b[37m\u001b[3m[ripwhitescrolls: Removed 256 items from 2 players]\u001b[0m')
     // test clickEvent
     expect(msg.with[0].clickEvent.action).toEqual('suggest_command')
     expect(msg.with[0].clickEvent.value).toEqual('/tell ripwhitescrolls ')
@@ -53,15 +55,15 @@ describe('using ChatMessage to parse messages from builder', () => {
         new MessageBuilder().setColor('white').setItalic(true).setText('world!')
       ])
     const messageObj = new ChatMessage(exampleMessage)
-    const expected = '<Notch\u001b[0m> \u001b[91m\u001b[1mHello \u001b[0m\u001b[97m\u001b[3mworld!\u001b[0m\u001b[0m'
-    expect(messageObj.toAnsi()).toEqual(expected)
+    expect(messageObj.toMotd()).toEqual('<Notch> §c§lHello §f§oworld!')
+    expect(messageObj.toAnsi()).toEqual('<Notch> \u001b[91m\u001b[1mHello \u001b[97m\u001b[3mworld!\u001b[0m')
   })
 })
 
 describe('test using chat color converter', () => {
   test('youtube example', () => {
-    const correctAnsi = '\u001b[37m[\u001b[0m\u001b[91m\u001b[0m\u001b[91m\u001b[1mYou\u001b[0m\u001b[97m\u001b[1mTube\u001b[0m\u001b[97m\u001b[1m\u001b[0m\u001b[97m\u001b[1m\u001b[0m\u001b[37m]\u001b[0m\u001b[0m'
-    const generatedMessage = new ChatMessage(convertColorCodes('&7[&c&lYou&fTube&r&7]')).toAnsi()
-    expect(generatedMessage).toEqual(correctAnsi)
+    const generatedMessage = new ChatMessage(convertColorCodes('&7[&c&lYou&fTube&r&7]'))
+    expect(generatedMessage.toMotd()).toEqual('§7[§c§lYou§fTube§r§7]')
+    expect(generatedMessage.toAnsi()).toEqual('\u001b[37m[\u001b[91m\u001b[1mYou\u001b[97mTube\u001b[0m\u001b[37m]\u001b[0m')
   })
 })
