@@ -13,6 +13,15 @@ class MessageBuilder {
     return this
   }
 
+  resetFormatting () {
+    this.setBold(false)
+    this.setItalic(false)
+    this.setUnderlined(false)
+    this.setStrikethrough(false)
+    this.setObfuscated(false)
+    this.setColor('reset')
+  }
+
   addTranslateInsertion (val) {
     if (!this.with) this.with = []
     this.with.push(val)
@@ -63,13 +72,6 @@ function convertColorCodes (str) {
       const text = currString.split('').reverse()// reverse
       const color = supportedColors[text.shift()]
       const newObj = new MessageBuilder()
-      if (color === 'reset') {
-        newObj.setObfuscated(false)
-        newObj.setBold(false)
-        newObj.setStrikethrough(false)
-        newObj.setUnderlined(false)
-        newObj.setItalic(false)
-      }
       if (color === 'obfuscated') {
         newObj.setObfuscated(true)
       } else if (color === 'bold') {
@@ -80,6 +82,8 @@ function convertColorCodes (str) {
         newObj.setUnderlined(true)
       } else if (color === 'italic') {
         newObj.setItalic(true)
+      } else if (color === 'reset') {
+        newObj.resetFormatting()
       } else {
         newObj.setColor(color)
       }
