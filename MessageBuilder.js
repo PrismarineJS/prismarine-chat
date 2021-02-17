@@ -62,7 +62,7 @@ function convertColorCodes (str) {
     else if (str[i] === '&') {
       const text = currString.split('').reverse()// reverse
       const color = supportedColors[text.shift()]
-      const newObj = new Message()
+      const newObj = new MessageBuilder()
       if (color === 'obfuscated') {
         newObj.setObfuscated(true)
       } else if (color === 'bold') {
@@ -73,21 +73,12 @@ function convertColorCodes (str) {
         newObj.setUnderlined(true)
       } else if (color === 'italic') {
         newObj.setItalic(true)
-      } else if (color !== 'reset') {
+      } else {
         newObj.setColor(color)
       }
       newObj.setText(text.join(''))
-      if (lastObj == null) { // if lastObject is null, this has to be the new lastObject
+      if (lastObj === null) { // if lastObject is null, this has to be the new lastObject
         lastObj = newObj
-      } else if (color === 'reset') { // if the color is reset, start a new branch
-        lastObj = new Message()
-          .setText('')
-          .setBold(false)
-          .setItalic(false)
-          .setStrikethrough(false)
-          .setUnderlined(false)
-          .setColor('white')
-          .addComponent(lastObj)
       } else { // otherwise extend the branch
         lastObj = newObj.addComponent(lastObj)
       }
@@ -97,4 +88,4 @@ function convertColorCodes (str) {
   return lastObj
 }
 
-module.exports = (version) => { return { Message, convertColorCodes } }
+module.exports = (version) => { return { MessageBuilder, convertColorCodes } }
