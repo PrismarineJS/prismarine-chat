@@ -63,6 +63,13 @@ function convertColorCodes (str) {
       const text = currString.split('').reverse()// reverse
       const color = supportedColors[text.shift()]
       const newObj = new MessageBuilder()
+      if (color === 'reset') {
+        newObj.setObfuscated(false)
+        newObj.setBold(false)
+        newObj.setStrikethrough(false)
+        newObj.setUnderlined(false)
+        newObj.setItalic(false)
+      }
       if (color === 'obfuscated') {
         newObj.setObfuscated(true)
       } else if (color === 'bold') {
