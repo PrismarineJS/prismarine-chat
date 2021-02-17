@@ -257,7 +257,8 @@ function loader (mcVersion) {
           red: '§c',
           light_purple: '§d',
           yellow: '§e',
-          white: '§f'
+          white: '§f',
+          reset: '§r'
         },
         bold: '§l',
         italic: '§o',
@@ -265,27 +266,47 @@ function loader (mcVersion) {
         strikethrough: '§m',
         obfuscated: '§k'
       }
-
-      let message = Object.keys(codes).map((code) => {
-        this[code] = this[code] || parent[code]
-        if (!this[code] || this[code] === 'false') return null
-        if (code === 'color') return codes.color[this.color]
-        return codes[code]
-      }).join('')
-
-      if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}§r`
-      else if (this.with) {
-        const args = this.with.map(entry => entry.toMotd(lang))
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
-      } else if (this.translate) {
-        message += lang[this.translate]
+      function makeTranslateString (currNode) {
+        const format = lang[currNode.translate]
+        const args = currNode.with.map(x => iterateMessageNode(x, true))
+        return vsprintf(format, args)
       }
-      if (this.extra) {
-        message += this.extra.map(entry => entry.toMotd(lang, this)).join('')
+      function iterateMessageNode (node, translate) {
+        const CODES_KEYS = Object.keys(codes)
+        const CODES_VALS = Object.values(codes)
+
+        let currText = ''
+        // make order
+        const futureNodes = []
+        let currNode = node // make first node initial node
+        while (currNode) {
+          // set color
+          if (currNode.color === null) currText += codes.color.reset
+          else if (currNode.color !== undefined) currText += codes.color[currNode.color]
+          // set font
+          for (let i = 1; i < CODES_KEYS.length; i++) {
+            if (currNode[CODES_KEYS[i]]) {
+              currText += CODES_VALS[i]
+            }
+          }
+          // get actual text from node
+          let text = ''
+          if (currNode.translate !== undefined) text = makeTranslateString(currNode)
+          else if (currNode.text) text = currNode.text
+
+          currText += text
+          if (currNode.extra) {
+            futureNodes.push(...(currNode.extra))
+          }
+          if (currNode.with && translate !== undefined && currNode.translate === undefined) {
+            futureNodes.push(...(currNode.with))
+          }
+          currNode = futureNodes.shift()
+        }
+        return currText
       }
-      return message
+
+      return iterateMessageNode(this)
     }
 
     toAnsi (lang = defaultLang) {
