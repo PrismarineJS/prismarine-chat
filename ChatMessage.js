@@ -293,8 +293,8 @@ function loader (mcVersion) {
         // get actual text from node
         if (node.translate !== undefined) {
           const format = lang[node.translate]
-          const args = node.with.map(x => iterateMessageNode(x, color, font))
-          currText += vsprintf(format, args)
+          const args = node.with.map(x => iterateMessageNode(x, color, font) + color + font)
+          currText += color + font + vsprintf(format, args)
         } else {
           if (node.text) currText += color + font + node.text
           if (node.extra) {
