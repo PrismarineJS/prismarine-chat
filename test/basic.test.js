@@ -62,8 +62,14 @@ describe('using ChatMessage to parse messages from builder', () => {
 
 describe('test using chat color converter', () => {
   test('youtube example', () => {
-    const generatedMessage = new ChatMessage(convertColorCodes('&7[&c&lYou&fTube&r&7]'))
-    expect(generatedMessage.toMotd()).toEqual('§7[§c§lYou§fTube§r§7]')
-    expect(generatedMessage.toAnsi()).toEqual('\u001b[37m[\u001b[91m\u001b[1mYou\u001b[97mTube\u001b[0m\u001b[37m]\u001b[0m')
+    const generatedMessage = new ChatMessage(convertColorCodes('&7[&c&lYou&fTube&7]'))
+    expect(generatedMessage.toMotd()).toEqual('§7[§c§lYou§fTube§7]')
+    expect(generatedMessage.toAnsi()).toEqual('\u001b[37m[\u001b[91m\u001b[1mYou\u001b[97mTube\u001b[37m]\u001b[0m')
+  })
+
+  test('youtube example json', () => {
+    const a = new ChatMessage(JSON.parse('{"color":"gray","text":"","extra":[{"text":"["},{"bold":true,"text":"","extra":[{"color":"red","text":"You"},{"color":"white","text":"Tube","bold":false}]},{"text":"]"}]}'))
+    const b = new ChatMessage(convertColorCodes('&7[&c&lYou&fTube&7]'))
+    expect(a.toMotd()).toEqual(b.toMotd())
   })
 })
