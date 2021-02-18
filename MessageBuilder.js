@@ -8,8 +8,32 @@ class MessageBuilder {
   setInsertion (val) { this.insertion = val; return this }
   setText (val) { this.text = val; return this }
   setClickEvent (action, value) { this.clickEvent = { action, value }; return this }
-  setHoverEvent (action, type, id, name) {
-    this.hoverEvent = { action, contents: { type, id, name: { text: name } } }
+  setHoverEvent (action, opts) {
+    let hoverValue = {}
+    switch (action) {
+      case 'show_text':
+        // opts should be a messagebuilder
+        hoverValue = opts
+        break
+      case 'show_item':
+        // TODO: support passing a prismarine-item as an option
+        hoverValue = opts
+        break
+      case 'show_entity':
+        // TODO: support passing a prismarine-entity as an option
+        if (opts.type) hoverValue.type = opts.type
+        if (opts.name) hoverValue.name = opts.name
+        // required
+        hoverValue.id = opts.id
+        hoverValue = opts
+        break
+      case 'show_achievement':
+        // TODO: throw error if version >=1.12, not supported anymore
+        // ex: opts = { achievement: 'achievement.openInventory'}
+        hoverValue = opts.achievement
+        break
+    }
+    this.hoverEvent.value = JSON.stringify(hoverValue.value)
     return this
   }
 
