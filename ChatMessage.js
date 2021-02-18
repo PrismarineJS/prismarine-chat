@@ -55,7 +55,7 @@ function loader (mcVersion) {
       }
 
       if (typeof json === 'object' && Array.isArray(json)) {
-        this.with = json.map(entry => new ChatMessage(entry))
+        this.extra = json.map(entry => new ChatMessage(entry))
       }
 
       // Text modifiers
@@ -266,42 +266,42 @@ function loader (mcVersion) {
         strikethrough: '§m',
         obfuscated: '§k'
       }
-      function makeTranslateString (currNode) {
-        const format = lang[currNode.translate]
-        const args = currNode.with.map(x => iterateMessageNode(x, true))
-        return vsprintf(format, args)
-      }
-      function iterateMessageNode (node, translate) {
+
+      function iterateMessageNode (node, color = '', font = '') {
         const CODES_KEYS = Object.keys(codes)
         const CODES_VALS = Object.values(codes)
 
         let currText = ''
-        // make order
-        const futureNodes = []
-        let currNode = node // make first node initial node
-        while (currNode) {
-          // set color
-          if (currNode.color === null) currText += codes.color.reset
-          else if (currNode.color !== undefined) currText += codes.color[currNode.color]
-          // set font
-          for (let i = 1; i < CODES_KEYS.length; i++) {
-            if (currNode[CODES_KEYS[i]]) {
-              currText += CODES_VALS[i]
+
+        // set color
+        if (node.color === null) {
+          color = codes.color.reset
+        } else if (node.color !== undefined) {
+          color = codes.color[node.color]
+        }
+
+        // set font
+        for (let i = 1; i < CODES_KEYS.length; i++) {
+          const f = node[CODES_KEYS[i]]
+          if (f) {
+            font += CODES_VALS[i]
+          } else if (f !== undefined) {
+            font = font.replace(CODES_VALS[i], '')
+          }
+        }
+
+        // get actual text from node
+        if (node.translate !== undefined) {
+          const format = lang[node.translate]
+          const args = node.with.map(x => iterateMessageNode(x, color, font))
+          currText += vsprintf(format, args)
+        } else {
+          if (node.text) currText += color + font + node.text
+          if (node.extra) {
+            for (const component of node.extra) {
+              currText += iterateMessageNode(component, color, font)
             }
           }
-          // get actual text from node
-          let text = ''
-          if (currNode.translate !== undefined) text = makeTranslateString(currNode)
-          else if (currNode.text) text = currNode.text
-
-          currText += text
-          if (currNode.extra) {
-            futureNodes.push(...(currNode.extra))
-          }
-          if (currNode.with && translate !== undefined && currNode.translate === undefined) {
-            futureNodes.push(...(currNode.with))
-          }
-          currNode = futureNodes.shift()
         }
         return currText
       }

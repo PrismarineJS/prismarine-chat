@@ -85,6 +85,7 @@ function convertColorCodes (str) {
       } else if (color === 'reset') {
         newObj.resetFormatting()
       } else {
+        newObj.resetFormatting()
         newObj.setColor(color)
       }
       newObj.setText(text.join(''))
