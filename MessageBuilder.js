@@ -33,7 +33,7 @@ class MessageBuilder {
         hoverValue = opts.achievement
         break
     }
-    this.hoverEvent.value = JSON.stringify(hoverValue.value)
+    this.hoverEvent = { action, value: JSON.stringify(hoverValue) }
     return this
   }
 
