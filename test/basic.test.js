@@ -11,9 +11,9 @@ describe('ChatMessage class works', () => {
     // test as a string
     expect(msg.toString()).toEqual('[ripwhitescrolls: Removed 256 items from 2 players]')
     // test as motd
-    expect(msg.toMotd()).toEqual('§7§o[ripwhitescrolls: Removed 256 items from 2 players]')
+    expect(msg.toMotd()).toEqual('§7§o[§7§oripwhitescrolls§7§o: §7§oRemoved §7§o256§7§o items from §7§o2§7§o players§7§o]')
     // test as ansi
-    expect(msg.toAnsi()).toEqual('\u001b[37m\u001b[3m[ripwhitescrolls: Removed 256 items from 2 players]\u001b[0m')
+    expect(msg.toAnsi()).toEqual('\u001b[37m\u001b[3m[\u001b[37m\u001b[3mripwhitescrolls\u001b[37m\u001b[3m: \u001b[37m\u001b[3mRemoved \u001b[37m\u001b[3m256\u001b[37m\u001b[3m items from \u001b[37m\u001b[3m2\u001b[37m\u001b[3m players\u001b[37m\u001b[3m]\u001b[0m')
     // test clickEvent
     expect(msg.with[0].clickEvent.action).toEqual('suggest_command')
     expect(msg.with[0].clickEvent.value).toEqual('/tell ripwhitescrolls ')
