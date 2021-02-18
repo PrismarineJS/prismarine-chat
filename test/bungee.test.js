@@ -18,8 +18,9 @@ function testDissembleReassembleComponents (components) {
 
 function testDissembleReassembleJSON (json) {
   expect(typeof json).toEqual('string')
-  const asMessage = new ChatMessage(json)
-  expect(JSON.stringify(asMessage)).toStrictEqual(json)
+  const asMessage = new ChatMessage(JSON.parse(json))
+  const messageAsJson = JSON.stringify(asMessage.json)
+  expect(messageAsJson).toStrictEqual(json)
 }
 
 describe('bungee tests', () => {
