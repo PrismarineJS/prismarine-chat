@@ -10,10 +10,6 @@ const {
 function testDissembleReassembleComponents (components) {
   expect(components).toBeInstanceOf(MessageBuilder)
   // TODO: Add support for parsing MessageBuilder directly to motd
-
-//   const asJson = JSON.stringify(components)
-//   const asParsed = new ChatMessage(asJson)
-//   expect(asParsed.toMotd()).toEqual(asJson)
 }
 
 function testDissembleReassembleJSON (json) {
@@ -28,11 +24,15 @@ describe('bungee tests', () => {
     // todo: add support for custom translatable strings
     // https://github.com/SpigotMC/BungeeCord/blob/master/chat/src/test/java/net/md_5/bungee/api/chat/TranslatableComponentTest.java
   })
-  test('testItemParse', () => {
-    const message = new MessageBuilder().setText('Test')
-    message.setHoverEvent('show_item', { id: 'minecraft:netherrack', count: 47 })
-    testDissembleReassembleComponents(message)
-    const json = { hoverEvent: { action: 'show_item', value: [{ text: { id: 'minecraft:netherrack', count: 47 } }] }, text: 'Test' }
-    testDissembleReassembleJSON(JSON.stringify(json))
+  describe('test item parsing', () => {
+    test('test item parsing from messagebuilder', () => {
+      const message = new MessageBuilder().setText('Test')
+      message.setHoverEvent('show_item', { id: 'minecraft:netherrack', count: 47 })
+      testDissembleReassembleComponents(message)
+    })
+    test('test item parsing from json', () => {
+      const json = { hoverEvent: { action: 'show_item', value: [{ text: { id: 'minecraft:netherrack', count: 47 } }] }, text: 'Test' }
+      testDissembleReassembleJSON(JSON.stringify(json))
+    })
   })
 })
