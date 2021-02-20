@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "minecraft-data": "^2.62.1",
-    "mojangson": "^1.0.0",
+    "mojangson": "^2.0.0",
     "sprintf-js": "^1.1.2"
   }
 }
