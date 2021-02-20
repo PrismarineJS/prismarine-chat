@@ -12,6 +12,10 @@ function testDissembleReassembleComponents (components) {
   // TODO: Add support for parsing MessageBuilder directly to motd
 }
 
+function makeComponentFullMessage (input) {
+  return `{\"text\":${input}}` // eslint-disable-line
+}
+
 function testDissembleReassembleJSON (json) {
   expect(typeof json).toEqual('string')
   const asMessage = new ChatMessage(JSON.parse(json))
@@ -31,8 +35,8 @@ describe('bungee tests', () => {
       testDissembleReassembleComponents(message)
     })
     test('test item parsing from json', () => {
-      const json = { hoverEvent: { action: 'show_item', value: [{ text: { id: 'minecraft:netherrack', count: 47 } }] }, text: 'Test' }
-      testDissembleReassembleJSON(JSON.stringify(json))
+      const json = '{\"hoverEvent\":{\"action\":\"show_item\",\"value\":[{\"text\":\"{id:\\\"minecraft:netherrack\\\",Count:47b}\"}]},\"text\":\"Test\"}' // eslint-disable-line
+      testDissembleReassembleJSON(makeComponentFullMessage(json))
     })
   })
 })
