@@ -27,6 +27,15 @@ class ChatMessage {
     this.parse(displayWarning)
   }
 
+  static REGEX_PATTERNS () {
+    const USERNAME_REGEX = '(?:\\(.+\\)|\\[.+\\]|.)*?(\\w+)'
+    return {
+      VANILLA_WHISPER: new RegExp(`^${USERNAME_REGEX} whispers(?: to you)?:? (.*)$`),
+      ESSENTIALS_WHISPER: new RegExp(`^\\[${USERNAME_REGEX} -> \\w+\\s?\\] (.*)$`),
+      ALL_CHAT: new RegExp(`^${USERNAME_REGEX}\\s?[>:\\-»\\]\\)~]+\\s(.*)$`)
+    }
+  }
+
   /**
    * Parses the this.json property to decorate the properties of the ChatMessage.
    * Called by the Constructor
