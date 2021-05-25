@@ -6,12 +6,10 @@ module.exports = loader
 function loader (mcVersion) {
   const mcData = require('minecraft-data')(mcVersion)
   defaultLang = mcData.language
-  version = mcVersion
   return ChatMessage
 }
 
 let defaultLang
-let version
 
 /**
  * ChatMessage Constructor
