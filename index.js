@@ -6,10 +6,12 @@ module.exports = loader
 function loader (mcVersion) {
   const mcData = require('minecraft-data')(mcVersion)
   defaultLang = mcData.language
+  version = mcVersion
   return ChatMessage
 }
 
 let defaultLang
+let version
 
 /**
  * ChatMessage Constructor
@@ -104,6 +106,11 @@ class ChatMessage {
 
     // Parse color
     this.color = json.color
+    
+    if (this.color.indexOf('#') === -1) {
+      this.color = 'white'
+    }
+    
     switch (this.color) {
       case 'obfuscated':
         this.obfuscated = true
@@ -131,7 +138,7 @@ class ChatMessage {
         break
     }
     if (Array.prototype.indexOf && this.color &&
-      supportedColors.indexOf(this.color) === -1 && displayWarning) {
+      supportedColors.indexOf(this.color) === -1 && !this.color.indexOf('#') === -1 && displayWarning) {
       console.warn('ChatMessage parsed with unsupported color', this.color)
     }
 
