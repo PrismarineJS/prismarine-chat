@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/PrismarineJS/prismarine-chat#readme",
   "devDependencies": {
-    "jest": "^26.1.0",
+    "jest": "^27.0.3",
     "require-self": "^0.2.3",
     "standard": "^16.0.1"
   },
