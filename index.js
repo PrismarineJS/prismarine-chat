@@ -184,6 +184,7 @@ class ChatMessage {
    * @return {void}
    */
   append (...messages) {
+    if (this.extra === undefined) this.extra = []
     messages.forEach((message) => {
       if (typeof message === 'object' && !Array.isArray(message)) {
         this.extra.push(message)
