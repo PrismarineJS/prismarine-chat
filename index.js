@@ -180,11 +180,11 @@ class ChatMessage {
 
   /**
    * Append one or more ChatMessages
-   * @param {object|string} rest ChatMessage
+   * @param {...object|string} messages ChatMessage
    * @return {void}
    */
-  append (...rest) {
-    rest.forEach((message) => {
+  append (...messages) {
+    messages.forEach((message) => {
       if (typeof message === 'object' && !Array.isArray(message)) {
         this.extra.push(message)
       } else if (typeof message === 'string') {
