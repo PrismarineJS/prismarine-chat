@@ -49,3 +49,11 @@ Converts to ansi format
 
 Returns the count of text extras and child ChatMessages
 Does not count recursively in to the children
+
+#### chat.append(ChatMessage)
+
+Appends another ChatMessage or a string
+
+#### chat.clone()
+
+Returns a clone of the ChatMessage
