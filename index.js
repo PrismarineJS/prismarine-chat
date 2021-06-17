@@ -104,12 +104,7 @@ class ChatMessage {
 
     // Parse color
     this.color = json.color
-    
-    if (this.color.indexOf('#') === -1) {
-      this.color.toHex = this.color
-      this.color = 'custom'
-    }
-    
+
     switch (this.color) {
       case 'obfuscated':
         this.obfuscated = true
@@ -136,6 +131,12 @@ class ChatMessage {
         this.color = null
         break
     }
+
+    if (this.color.indexOf('#') === -1) {
+      this.color.toHex = this.color
+      this.color = 'custom'
+    }
+
     if (Array.prototype.indexOf && this.color &&
       supportedColors.indexOf(this.color) === -1 && !this.color === "custom" && displayWarning) {
       console.warn('ChatMessage parsed with unsupported color', this.color)
