@@ -180,6 +180,35 @@ function loader (mcVersion) {
     }
 
     /**
+   * Append one or more ChatMessages
+   * @param {...object|string} messages ChatMessage
+   * @return {void}
+   */
+    append (...messages) {
+      if (this.extra === undefined) this.extra = []
+      messages.forEach((message) => {
+        if (typeof message === 'object' && !Array.isArray(message)) {
+          this.extra.push(message)
+        } else if (typeof message === 'string') {
+          this.extra.push(new ChatMessage(message))
+        }
+      })
+    }
+
+    /**
+  * Returns a clone of the ChatMessage
+  * @return {ChatMessage}
+   */
+    clone () {
+      return Object.assign(
+        Object.create(
+          Object.getPrototypeOf(this)
+        ),
+        this
+      )
+    }
+
+    /**
    * Returns the count of text extras and child ChatMessages
    * Does not count recursively in to the children
    * @return {Number}
