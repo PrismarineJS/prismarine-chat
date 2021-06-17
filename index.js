@@ -106,7 +106,8 @@ class ChatMessage {
     this.color = json.color
     
     if (this.color.indexOf('#') === -1) {
-      this.color = 'white'
+      this.color.toHex = this.color
+      this.color = 'custom'
     }
     
     switch (this.color) {
