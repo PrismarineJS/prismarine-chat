@@ -137,7 +137,7 @@ class ChatMessage {
         break
     }
     if (Array.prototype.indexOf && this.color &&
-      supportedColors.indexOf(this.color) === -1 && !this.color.indexOf('#') === -1 && displayWarning) {
+      supportedColors.indexOf(this.color) === -1 && !this.color === "custom" && displayWarning) {
       console.warn('ChatMessage parsed with unsupported color', this.color)
     }
 
