@@ -1,5 +1,11 @@
 ## History
 
+### 1.0.4
+
+* Added clone() and append() (@builder-247)
+* update mojangson to 2.0.0 (@u9g)
+* Add trailing color reset to .toAnsi() (@DrMoraschi)
+
 ### 1.0.3
 
 * by default hide warnings
