@@ -122,16 +122,16 @@ function loader (version) {
     /**
      * appended to the end of this message object with the existing formatting.
      * formatting can be overrode in child messagebuilder
-     * @param {MessageBuilder} val
+     * @param {MessageBuilder|string} val
      * @returns
      */
-    addExtra (val) { this.extra.push(val.toString()); return this }
+    addExtra (val) { this.extra.push(typeof val === 'string' ? val : val.toJSON()); return this }
     /**
      * requires .translate to be set for this to be used
-     * @param {MessageBuilder} val
+     * @param {MessageBuilder|string} val
      * @returns
      */
-    addWith (val) { this.with.push(val.toString()); return this }
+    addWith (val) { this.with.push(typeof val === 'string' ? val : val.toJSON()); return this }
 
     toJSON () {
       const isDef = x => x !== undefined
@@ -144,6 +144,7 @@ function loader (version) {
       if (isDef(this.translate)) obj.translate = this.translate
       if (isDef(this.insertion)) obj.insertion = this.insertion
       if (isDef(this.italic)) obj.italic = this.italic
+      if (isDef(this.color)) obj.color = this.color
       if (isDef(this.bold)) obj.bold = this.bold
       if (isDef(this.font)) obj.font = this.font
       if (isDef(this.text)) { // text > keybind > score
@@ -153,7 +154,7 @@ function loader (version) {
       } else if (isDef(this.score)) {
         obj.score = this.score
       }
-      if (this.with.length > 0) {
+      if (isDef(this.translate) && this.with.length > 0) {
         obj.with = this.with
       }
       if (this.extra.length > 0) {
