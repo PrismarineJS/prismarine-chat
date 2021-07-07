@@ -1,6 +1,5 @@
 const mojangson = require('mojangson')
-
-const nbt = require('./nbt')
+const nbt = require('prismarine-nbt')
 
 function loader (version) {
   class MessageBuilder {
