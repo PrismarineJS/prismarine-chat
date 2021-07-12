@@ -19,6 +19,7 @@ console.log(msg.toString()) // Example chat message
 
 ```
 ## API
+
 ### ChatMessage(message,[displayWarning])
 * `message` - Can be either text or a minecraft chat JSON object
 * `displayWarning` - Display warnings if true, default to false
@@ -57,3 +58,44 @@ Appends another ChatMessage or a string
 #### chat.clone()
 
 Returns a clone of the ChatMessage
+
+```js
+const { MessageBuilder } = require('prismarine-chat')('1.16')
+
+const msg = new MessageBuilder().setText('Example chat mesasge')
+console.log(JSON.stringify(msg)) // The string as a message component
+
+```
+
+### MessageBuilder()
+
+#### setBold (val: boolean) : this
+#### setItalic (val: boolean) : this
+#### setUnderlined (val: boolean) : this
+#### setStrikethrough (val: boolean) : this
+#### setObfuscated (val: boolean) : this
+#### setColor (val: string) : this
+#### setText (val: string) : this
+
+> check code for examples (and explanations) from here on
+
+#### setFont (val: string) : this
+#### setTranslate (val: string) : this
+#### setInsertion (val: string) : this
+#### setKeybind (val: string) : this
+#### setScore (name: string, objective: string) : this
+#### setClickEvent (action: string, value: object) : this
+#### setHoverEvent (action: string, data: object, type?: 'contents'|'value') : this
+#### addExtra (val: MessageBuilder | string) : this
+#### addWith (val: MessageBuilder | string) : this
+#### resetFormatting () : void
+sets every one of the formatting options to false and sets text to `reset` type
+
+#### toJSON () : object
+`builder.toJSON()` is the same thing as `JSON.stringify(builder)`
+
+#### toString () : string
+runs `JSON.stringify()` on `this`
+
+#### fromString(str, {colorSeperator = '&'}) : MessageBuilder
+convert string with color codes like `&4Hello&cWorld` to a `MessageBuilder` object

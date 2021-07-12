@@ -1,6 +1,31 @@
 const mojangson = require('mojangson')
 const nbt = require('prismarine-nbt')
 
+const supportedColors = {
+  0: 'black',
+  1: 'dark_blue',
+  2: 'dark_green',
+  3: 'dark_aqua',
+  4: 'dark_red',
+  5: 'dark_purple',
+  6: 'gold',
+  7: 'gray',
+  8: 'dark_gray',
+  9: 'blue',
+  a: 'green',
+  b: 'aqua',
+  c: 'red',
+  d: 'light_purple',
+  e: 'yellow',
+  f: 'white',
+  k: 'obfuscated',
+  l: 'bold',
+  m: 'strikethrough',
+  n: 'underlined',
+  o: 'italic',
+  r: 'reset'
+}
+
 function loader (version) {
   class MessageBuilder {
     constructor () {
@@ -65,32 +90,30 @@ function loader (version) {
      */
     setClickEvent (action, value) { this.clickEvent = { action, value }; return this }
     /**
-     * if you want to use `contents`, leave `value` undefined.
-     * if you want to use `value`, leave `contesnt` undefined.
      * @param {'show_text'|'show_entity'|'show_item'} action
-     * @param {import('prismarine-item').Item|import('prismarine-entity').Entity|MessageBuilder} value
+     * @param {import('prismarine-item').Item|import('prismarine-entity').Entity|MessageBuilder} data
      * @param {'contents'|'value'} type [type='contents']
      */
-    setHoverEvent (action, value, type = 'contents') {
+    setHoverEvent (action, data, type = 'contents') {
       const hoverEvent = { action }
       if (type === 'contents') {
         switch (action) {
           case 'show_item':
             hoverEvent.contents = {
-              id: `minecraft:${value.name}`,
-              count: value.count,
-              tag: mojangson.stringify(value.nbt)
+              id: `minecraft:${data.name}`,
+              count: data.count,
+              tag: mojangson.stringify(data.nbt)
             }
             break
           case 'show_entity':
             hoverEvent.contents = {
-              name: value.displayName,
-              type: `minecraft:${value.name}`,
-              id: value.uuid
+              name: data.displayName,
+              type: `minecraft:${data.name}`,
+              id: data.uuid
             }
             break
           case 'show_text':
-            hoverEvent.contents = value
+            hoverEvent.contents = data
             break
           default:
             throw Error('Not implemented')
@@ -100,14 +123,14 @@ function loader (version) {
           case 'show_item':
             // works for 1.12.2 & 1.17
             hoverEvent.value = mojangson.stringify(nbt.comp({
-              id: nbt.string(`minecraft:${value.name}`),
-              Count: nbt.byte(value.count),
-              tag: value.nbt,
+              id: nbt.string(`minecraft:${data.name}`),
+              Count: nbt.byte(data.count),
+              tag: data.nbt,
               Damage: nbt.int(0)
             }))
             break
           case 'show_text':
-            hoverEvent.value = value.toString()
+            hoverEvent.value = data.toString()
             break
           case 'show_entity':
           default:
@@ -131,6 +154,15 @@ function loader (version) {
      * @returns
      */
     addWith (val) { this.with.push(typeof val === 'string' ? val : val.toJSON()); return this }
+
+    resetFormatting () {
+      this.setBold(false)
+      this.setItalic(false)
+      this.setUnderlined(false)
+      this.setStrikethrough(false)
+      this.setObfuscated(false)
+      this.setColor('reset')
+    }
 
     toJSON () {
       const isDef = x => x !== undefined
@@ -165,7 +197,42 @@ function loader (version) {
     toString () {
       return JSON.stringify(this)
     }
+
+    static fromString (str, { colorSeperator = '&' } = {}) {
+      let lastObj = null
+      let currString = ''
+      for (let i = str.length - 1; i > -1; i--) {
+        const char = str.substring(i, i + 1)
+        if (char !== colorSeperator) currString += char
+        else {
+          const text = currString.split('').reverse()
+          const color = supportedColors[text.shift()]
+          const newObj = new MessageBuilder()
+          if (color === 'obfuscated') {
+            newObj.setObfuscated(true)
+          } else if (color === 'bold') {
+            newObj.setBold(true)
+          } else if (color === 'strikethrough') {
+            newObj.setStrikethrough(true)
+          } else if (color === 'underlined') {
+            newObj.setUnderlined(true)
+          } else if (color === 'italic') {
+            newObj.setItalic(true)
+          } else if (color === 'reset') {
+            newObj.resetFormatting()
+          } else {
+            newObj.setColor(color)
+          }
+          newObj.setText(text.join(''))
+          if (lastObj === null) lastObj = newObj
+          else lastObj = newObj.addExtra(lastObj)
+          currString = ''
+        }
+      }
+      return lastObj
+    }
   }
+
   return { MessageBuilder }
 }
 

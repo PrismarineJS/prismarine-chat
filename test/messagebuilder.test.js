@@ -58,5 +58,18 @@ describe('MessageBuilder', () => {
         expect(text).toStrictEqual('Hello world')
       })
     })
+
+    describe('MessageBuilder#fromColorCodeString', () => {
+      it('should work with youtube example', () => {
+        const example = '&0&l[&4&lYou&f&lTube&0&l]'
+        const json = JSON.stringify(MessageBuilder.fromString(example))
+        expect(json).toStrictEqual('{"color":"black","text":"","extra":[{"bold":true,"text":"[","extra":[{"color":"dark_red","text":"","extra":[{"bold":true,"text":"You","extra":[{"color":"white","text":"","extra":[{"bold":true,"text":"Tube","extra":[{"color":"black","text":"","extra":[{"bold":true,"text":"]"}]}]}]}]}]}]}]}')
+      })
+      it('should allow &l at the start to work through-out', () => {
+        const example = '&0&l[&4You&fTube&0]'
+        const json = JSON.stringify(MessageBuilder.fromString(example))
+        expect(json).toStrictEqual('{"color":"black","text":"","extra":[{"bold":true,"text":"[","extra":[{"color":"dark_red","text":"You","extra":[{"color":"white","text":"Tube","extra":[{"color":"black","text":"]"}]}]}]}]}')
+      })
+    })
   })
 })
