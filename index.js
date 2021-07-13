@@ -6,6 +6,8 @@ module.exports = loader
 function loader (mcVersion) {
   const mcData = require('minecraft-data')(mcVersion)
   defaultLang = mcData.language
+  const { MessageBuilder } = require('./MessageBuilder')(mcVersion)
+  ChatMessage.MessageBuilder = MessageBuilder
   return ChatMessage
 }
 
