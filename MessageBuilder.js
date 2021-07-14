@@ -229,6 +229,11 @@ function loader (version) {
           currString = ''
         }
       }
+      if (currString !== '') {
+        const txt = currString.split('').reverse().join('')
+        if (lastObj !== null) lastObj = new MessageBuilder().setText(txt).addExtra(lastObj)
+        else lastObj = new MessageBuilder().setText(txt)
+      }
       return lastObj
     }
   }
