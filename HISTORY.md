@@ -1,5 +1,8 @@
 ## History
 
+### 1.1.0
+* Added MessageBuilder (@u9g)
+
 ### 1.0.4
 
 * Added clone() and append() (@builder-247)
