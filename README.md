@@ -97,5 +97,5 @@ sets every one of the formatting options to false and sets text to `reset` type
 #### toString () : string
 runs `JSON.stringify()` on `this`
 
-#### static MessageBuilder.fromString(str, {colorSeperator = '&'}) : MessageBuilder
+#### static MessageBuilder.fromString(str, {colorSeparator = '&'}) : MessageBuilder
 convert string with color codes like `&4Hello&cWorld` to a `MessageBuilder` object

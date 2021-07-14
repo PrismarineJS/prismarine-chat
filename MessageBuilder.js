@@ -198,12 +198,12 @@ function loader (version) {
       return JSON.stringify(this)
     }
 
-    static fromString (str, { colorSeperator = '&' } = {}) {
+    static fromString (str, { colorSeparator = '&' } = {}) {
       let lastObj = null
       let currString = ''
       for (let i = str.length - 1; i > -1; i--) {
         const char = str.substring(i, i + 1)
-        if (char !== colorSeperator) currString += char
+        if (char !== colorSeparator) currString += char
         else {
           const text = currString.split('').reverse()
           const color = supportedColors[text.shift()]
