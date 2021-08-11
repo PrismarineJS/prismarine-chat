@@ -23,6 +23,8 @@ class ChatMessage {
       this.json = { text: message }
     } else if (typeof message === 'object' && !Array.isArray(message)) {
       this.json = message
+    } else if (typeof message === 'object') {
+      this.json = { extra: message }
     } else {
       throw new Error('Expected String or Object for Message argument')
     }

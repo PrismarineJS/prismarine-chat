@@ -17,3 +17,7 @@ test('Parsing message that uses language file & numbers', () => {
   expect(msg.with[1].with[0].text).toBe(256)
   expect(msg.with[1].with[1].text).toBe(2)
 })
+test('Parsing a chat message which is an array', () => {
+  const msg = new ChatMessage([{ text: 'Example chat ' }, { text: 'message' }])
+  expect(msg.toString()).toBe('Example chat message')
+})
