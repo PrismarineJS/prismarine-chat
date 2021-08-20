@@ -352,4 +352,14 @@ class ChatMessage {
     }
     return message + '\u001b[0m'
   }
+
+  static fromNotch (msg) {
+    let toRet
+    try {
+      toRet = new ChatMessage(JSON.parse(msg))
+    } catch (e) {
+      toRet = new ChatMessage(msg)
+    }
+    return toRet
+  }
 }
