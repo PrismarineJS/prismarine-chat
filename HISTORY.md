@@ -1,5 +1,8 @@
 ## History
 
+### 1.2.0
+* Added fromNotch() (@u9g)
+
 ### 1.1.0
 * Added MessageBuilder (@u9g)
 
