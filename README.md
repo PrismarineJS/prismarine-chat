@@ -67,6 +67,10 @@ console.log(JSON.stringify(msg)) // The string as a message component
 
 ```
 
+#### static ChatMessage.fromNotch(msg)
+
+Returns a prismarine-chat representation of the message recieved from the 'chat' packet, example shown [here](examples/minecraftprotocol_fromnotch/fromnotch.js)
+
 ### MessageBuilder()
 
 #### setBold (val: boolean) : this
