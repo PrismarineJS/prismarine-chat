@@ -1,5 +1,8 @@
 ## History
 
+### 1.3.0
+* add typings (@Gjum)
+
 ### 1.2.0
 * Added fromNotch() (@u9g)
 * Add support for array chat messages (@mat-1)
