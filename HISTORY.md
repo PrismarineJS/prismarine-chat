@@ -1,5 +1,8 @@
 ## History
 
+### 1.3.1
+* export ChatMessage object in typings
+
 ### 1.3.0
 * add typings (@Gjum)
 
