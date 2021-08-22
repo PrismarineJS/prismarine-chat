@@ -2,7 +2,7 @@ declare const loader: (mcVersion: string) => typeof ChatMessage
 
 export default loader
 
-declare class ChatMessage {
+export declare class ChatMessage {
   // for export
   static MessageBuilder: typeof MessageBuilder
 
