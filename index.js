@@ -267,6 +267,14 @@ class ChatMessage {
     return message.replace(/§[0-9a-flnmokr]/g, '')
   }
 
+  /**
+   * Returns the JSON respresentation of the chat message
+   * @returns {Object}
+   */
+  toJSON () {
+    return this.json
+  }
+
   valueOf () {
     return this.toString()
   }

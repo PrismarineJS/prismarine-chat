@@ -15,16 +15,6 @@ export declare class ChatMessage {
   )
 
   /**
-   * Append one or more ChatMessages
-   */
-  append(...messages: object[] | string[]): void
-
-  /**
-   * Returns a clone of the ChatMessage
-   */
-  clone(): ChatMessage
-
-  /**
    * Flattens the message into plain-text, without style.
    */
   toString(language?: Language): string
@@ -33,6 +23,17 @@ export declare class ChatMessage {
    * Flattens the message into text containing `§x` style codes.
    */
   toMotd(language?: Language, parent?: object): string
+
+  /**
+   * Returns the JSON respresentation of the chat message
+   */
+  toJSON(): any
+
+  /**
+   * Returns a text part from the message.
+   * @param idx Index of the part
+   */
+  getText(idx, language?: Language): string
 
   /**
    * Flattens the message into text styled with ANSI escape sequences.
@@ -48,15 +49,22 @@ export declare class ChatMessage {
   length(): number
 
   /**
-   * Returns a text part from the message.
-   * @param idx Index of the part
+   * Append one or more ChatMessages
    */
-  getText(idx, language?: Language): string
+  append(...messages: object[] | string[]): void
+
+  /**
+   * Returns a clone of the ChatMessage
+   */
+  clone(): ChatMessage
 
   /**
    * Flattens the message into plain-text, without style.
    */
   valueOf(): string
+
+  static fromNotch(msg: any): ChatMessage
+
 }
 
 type Language = { [key: string]: string }

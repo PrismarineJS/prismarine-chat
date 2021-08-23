@@ -35,6 +35,10 @@ Converts to motd format
  * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
  * `parent` - Set a custom lang (defaults to mcData.language)
 
+#### chat.toJSON()
+
+Returns the JSON respresentation of the chat message
+
 #### chat.getText(idx, [lang])
 
 Returns a text part from the message
