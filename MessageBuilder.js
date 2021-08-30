@@ -102,7 +102,7 @@ function loader (version) {
             hoverEvent.contents = {
               id: `minecraft:${data.name}`,
               count: data.count,
-              tag: mojangson.stringify(data.nbt)
+              tag: data.nbt ? mojangson.stringify(data.nbt) : {}
             }
             break
           case 'show_entity':
@@ -125,8 +125,8 @@ function loader (version) {
             hoverEvent.value = mojangson.stringify(nbt.comp({
               id: nbt.string(`minecraft:${data.name}`),
               Count: nbt.byte(data.count),
-              tag: data.nbt,
-              Damage: nbt.int(0)
+              tag: data.nbt || nbt.comp({}),
+              Damage: nbt.short(0)
             }))
             break
           case 'show_text':
