@@ -57,6 +57,8 @@ export declare class ChatMessage {
    * Flattens the message into plain-text, without style.
    */
   valueOf(): string
+
+  static fromNotch(str: string): ChatMessage
 }
 
 type Language = { [key: string]: string }
