@@ -179,7 +179,7 @@ export declare class MessageBuilder {
 
   static fromString(
     str: string,
-    args: { colorSeparator?: string }
+    args?: { colorSeparator?: string }
   ): MessageBuilder
 }
 
