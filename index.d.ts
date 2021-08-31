@@ -61,7 +61,7 @@ export declare class ChatMessage {
 
 type Language = { [key: string]: string }
 
-declare class MessageBuilder {
+export declare class MessageBuilder {
   with: string[]
   extra: string[]
   bold?: boolean
