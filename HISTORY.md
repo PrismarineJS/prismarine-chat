@@ -1,5 +1,8 @@
 ## History
 
+### 1.3.2
+* Properly export loader function and export ChatMessage & MessageBuilder as types
+
 ### 1.3.1
 * export ChatMessage object in typings
 
