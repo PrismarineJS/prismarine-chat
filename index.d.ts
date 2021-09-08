@@ -1,11 +1,8 @@
 declare const loader: (mcVersion: string) => typeof ChatMessage
 
-export = loader
+export default loader
 
-export type ChatMessage = ChatMessage
-export type MessageBuilder = MessageBuilder
-
-declare class ChatMessage {
+export declare class ChatMessage {
   // for export
   static MessageBuilder: typeof MessageBuilder
 
@@ -66,7 +63,7 @@ declare class ChatMessage {
 
 type Language = { [key: string]: string }
 
-declare class MessageBuilder {
+export declare class MessageBuilder {
   with: string[]
   extra: string[]
   bold?: boolean
