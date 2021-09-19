@@ -163,7 +163,7 @@ function loader (version) {
     addWith (...args) {
       for (const v of args) {
         const value = typeof v === 'string' ? v : v.toJSON()
-        this.withs.push(value)
+        this.with.push(value)
       }
       return this
     }
