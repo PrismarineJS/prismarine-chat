@@ -164,12 +164,12 @@ export declare class MessageBuilder {
    * appended to the end of this message object with the existing formatting.
    * formatting can be overridden in child messagebuilder
    */
-  addExtra(val: ...(MessageBuilder | string)): this
+  addExtra(...args: Array<MessageBuilder | string>): this
 
   /**
    * requires .translate to be set for this to be used
    */
-  addWith(val: ...(MessageBuilder | string)): this
+  addWith(...args: Array<MessageBuilder | string>): this
 
   resetFormatting(): void
 
