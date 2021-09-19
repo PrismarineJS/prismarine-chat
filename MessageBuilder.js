@@ -148,7 +148,7 @@ function loader (version) {
      * @returns
      */
     addExtra (...args) {
-      for (const v of arg) {
+      for (const v of args) {
         const value = typeof v === 'string' ? v : v.toJSON()
         this.extra.push(value)
       }
@@ -161,7 +161,7 @@ function loader (version) {
      * @returns
      */
     addWith (...args) {
-      for (const v of arg) {
+      for (const v of args) {
         const value = typeof v === 'string' ? v : v.toJSON()
         this.withs.push(value)
       }
