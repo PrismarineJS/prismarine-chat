@@ -144,11 +144,10 @@ function loader (version) {
     /**
      * appended to the end of this message object with the existing formatting.
      * formatting can be overrode in child messagebuilder
-     * @param {...(MessageBuilder|string)} val
+     * @param {Array<MessageBuilder | string>} ...args
      * @returns
      */
-    // addExtra (...arg) { this.extra.push(typeof val === 'string' ? val : val.toJSON()); return this }
-    addExtra (...arg) {
+    addExtra (...args) {
       for (const v of arg) {
         const value = typeof v === 'string' ? v : v.toJSON()
         this.extra.push(value)
@@ -158,10 +157,10 @@ function loader (version) {
 
     /**
      * requires .translate to be set for this to be used
-     * @param {...(MessageBuilder|string)} val
+     * @param {Array<MessageBuilder | string>} ...args
      * @returns
      */
-    addWith (...arg) {
+    addWith (...args) {
       for (const v of arg) {
         const value = typeof v === 'string' ? v : v.toJSON()
         this.withs.push(value)
