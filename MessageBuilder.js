@@ -144,16 +144,29 @@ function loader (version) {
     /**
      * appended to the end of this message object with the existing formatting.
      * formatting can be overrode in child messagebuilder
-     * @param {MessageBuilder|string} val
+     * @param {...(MessageBuilder|string)} val
      * @returns
      */
-    addExtra (val) { this.extra.push(typeof val === 'string' ? val : val.toJSON()); return this }
+    // addExtra (...arg) { this.extra.push(typeof val === 'string' ? val : val.toJSON()); return this }
+    addExtra (...arg) { 
+      for (const v of arg) {
+        const value = typeof v === 'string' ? v : v.toJSON()
+        this.extra.push(value)
+      }
+      return this 
+    }
     /**
      * requires .translate to be set for this to be used
-     * @param {MessageBuilder|string} val
+     * @param {...(MessageBuilder|string)} val
      * @returns
      */
-    addWith (val) { this.with.push(typeof val === 'string' ? val : val.toJSON()); return this }
+    addWith (...arg) {
+      for (const v of arg) {
+        const value = typeof v === 'string' ? v : v.toJSON()
+        this.withs.push(value)
+      }
+      return this 
+    }
 
     resetFormatting () {
       this.setBold(false)
