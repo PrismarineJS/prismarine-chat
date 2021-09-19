@@ -148,13 +148,14 @@ function loader (version) {
      * @returns
      */
     // addExtra (...arg) { this.extra.push(typeof val === 'string' ? val : val.toJSON()); return this }
-    addExtra (...arg) { 
+    addExtra (...arg) {
       for (const v of arg) {
         const value = typeof v === 'string' ? v : v.toJSON()
         this.extra.push(value)
       }
-      return this 
+      return this
     }
+
     /**
      * requires .translate to be set for this to be used
      * @param {...(MessageBuilder|string)} val
@@ -165,7 +166,7 @@ function loader (version) {
         const value = typeof v === 'string' ? v : v.toJSON()
         this.withs.push(value)
       }
-      return this 
+      return this
     }
 
     resetFormatting () {
