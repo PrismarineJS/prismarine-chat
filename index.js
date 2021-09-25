@@ -353,11 +353,13 @@ class ChatMessage {
     let message = this.toMotd(lang)
     for (const k in codes) {
       message = message.replace(new RegExp(k, 'g'), codes[k])
-      if (message.indexOf('§#') !== -1) {
-        // Stolen from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-        // Inspired by KaffinPX
-        const hexRegex = /§#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})/
-        const hexCodes = hexRegex.exec(message)
+    }
+    if (message.indexOf('§#') !== -1) {
+      const hexRegex = /§#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})/
+      let hexCodes = hexRegex.exec(message)
+      // Iterate over each hexColorCode match (§#69420, §#ABCDEF, §#A1B2C3)
+      while ((hexCodes = hexRegex.exec(message)) !== null) {
+        console.log(hexCodes)
         const red = parseInt(hexCodes[1], 16)
         const green = parseInt(hexCodes[2], 16)
         const blue = parseInt(hexCodes[3], 16)
