@@ -134,8 +134,10 @@ class ChatMessage {
         this.color = null
         break
     }
+    // Make sure color is valid
     if (Array.prototype.indexOf && this.color &&
-      supportedColors.indexOf(this.color) === -1 && displayWarning) {
+      supportedColors.indexOf(this.color) === -1 &&
+      !this.color.match(/#?[a-fA-F\d]{6}/ && displayWarning)) {
       console.warn('ChatMessage parsed with unsupported color', this.color)
     }
 
