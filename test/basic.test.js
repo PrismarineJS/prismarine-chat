@@ -21,3 +21,7 @@ test('Parsing a chat message which is an array', () => {
   const msg = new ChatMessage([{ text: 'Example chat ' }, { text: 'message' }])
   expect(msg.toString()).toBe('Example chat message')
 })
+test('hex', () => {
+  const msg = new ChatMessage({ text: 'uwu', color: '#AAAAAA' })
+  expect(msg.toAnsi().toBe('\u001b[38;2;170;170;170muwu\u001b[0m'))
+})
