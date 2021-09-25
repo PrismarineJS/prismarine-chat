@@ -176,7 +176,9 @@ export declare class MessageBuilder {
   toJSON(): object
 
   toString(): string
-
+  /**
+   * fromString('&aHello').toJSON() => { text: 'Hello', color: 'aqua' }
+   */
   static fromString(
     str: string,
     args?: { colorSeparator?: string }
