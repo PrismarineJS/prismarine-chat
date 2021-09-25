@@ -23,11 +23,11 @@ test('Parsing a chat message which is an array', () => {
 })
 test('Chat Message with a single hex color', () => {
   const msg = new ChatMessage({ text: 'uwu', color: '#FF0000' })
-  expect(msg.toMotd()).toBe('§#FF0000§r')
+  expect(msg.toMotd()).toBe('§#FF0000uwu§r')
   expect(msg.toAnsi()).toBe('\u001B[0m\u001B[38;2;255;0;0muwu\u001B[0m\u001B[0m')
 })
 test('Chat Message with multiple hex colors', () => {
   const msg = new ChatMessage(['', { text: 'uwu ', color: '#FF0000' }, { text: 'owo ', color: '#0000FF' }, { text: 'uwu', color: '#FF0000' }])
   expect(msg.toMotd()).toBe('§r§#FF0000uwu §r§#0000FFowo §r§#FF0000uwu§r')
-  expect(msg.toAnsi()).toBe('\u001B[0m\u001B[38;2;255;0;0muwu \u001B[0m\u001B[38;2;0;0;255mowo \u001B[0m§#FF0000uwu\u001B[0m\u001B[0m')
+  expect(msg.toAnsi()).toBe('\u001B[0m\u001B[38;2;255;0;0muwu \u001B[0m\u001B[38;2;0;0;255mowo \u001B[0muwu\u001B[0m\u001B[0m')
 })
