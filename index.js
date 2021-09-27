@@ -134,8 +134,10 @@ class ChatMessage {
         this.color = null
         break
     }
+    // Make sure color is valid
     if (Array.prototype.indexOf && this.color &&
-      supportedColors.indexOf(this.color) === -1 && displayWarning) {
+      supportedColors.indexOf(this.color) === -1 &&
+      !this.color.match(/#[a-fA-F\d]{6}/) && displayWarning) {
       console.warn('ChatMessage parsed with unsupported color', this.color)
     }
 
@@ -301,7 +303,11 @@ class ChatMessage {
     let message = Object.keys(codes).map((code) => {
       this[code] = this[code] || parent[code]
       if (!this[code] || this[code] === 'false') return null
-      if (code === 'color') return codes.color[this.color]
+      if (code === 'color') {
+        // return hex codes in this format
+        if (this.color.startsWith('#')) return `§${this.color}`
+        return codes.color[this.color]
+      }
       return codes[code]
     }).join('')
 
@@ -349,6 +355,17 @@ class ChatMessage {
     let message = this.toMotd(lang)
     for (const k in codes) {
       message = message.replace(new RegExp(k, 'g'), codes[k])
+    }
+    const hexRegex = /§#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})/
+    while (message.search(hexRegex) !== -1) {
+      // Stolen from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+      const hexCodes = hexRegex.exec(message)
+      // Iterate over each hexColorCode match (§#69420, §#ABCDEF, §#A1B2C3)
+      const red = parseInt(hexCodes[1], 16)
+      const green = parseInt(hexCodes[2], 16)
+      const blue = parseInt(hexCodes[3], 16)
+      // ANSI from https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#rgb-colors
+      message = message.replace(hexRegex, `\u001b[38;2;${red};${green};${blue}m`)
     }
     return message + '\u001b[0m'
   }
