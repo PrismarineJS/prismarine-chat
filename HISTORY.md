@@ -1,5 +1,9 @@
 ## History
 
+### 1.3.4
+* added hex code color support (@U5B)
+* added example (@u9g)
+
 ### 1.3.3
 * fix typings
 
