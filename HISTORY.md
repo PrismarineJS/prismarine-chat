@@ -1,6 +1,6 @@
 ## History
 
-### 1.3.4
+### 1.4.0
 * added hex code color support (@U5B)
 * added example (@u9g)
 
