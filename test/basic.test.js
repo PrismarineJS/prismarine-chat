@@ -11,7 +11,7 @@ test('Parsing message that uses language file & numbers', () => {
   // test as ansi
   expect(msg.toAnsi()).toBe('\u001b[37m\u001b[3m[ripwhitescrolls\u001b[0m: Removed 256\u001b[0m items from 2\u001b[0m players]\u001b[0m')
   // test as motd
-  expect(msg.motd()).toBe('§7§o[ripwhitescrolls§r: Removed 256§r items from 2§r players]§r')
+  expect(msg.motd()).toBe('§7§o[§r§rripwhitescrolls§r§r: Removed 256§r items from 2§r players]§r')
   // test clickEvent
   expect(msg.with[0].clickEvent.action).toBe('suggest_command')
   expect(msg.with[0].clickEvent.value).toBe('/tell ripwhitescrolls ')
