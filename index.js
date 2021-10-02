@@ -311,7 +311,7 @@ class ChatMessage {
       return codes[code]
     }).join('')
 
-    if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}§r`
+    if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}`
     else if (this.with) {
       const args = this.with.map(entry => entry.toMotd(lang))
       const format = lang[this.translate]
@@ -353,9 +353,11 @@ class ChatMessage {
     }
 
     let message = this.toMotd(lang)
+    // legacy color codes
     for (const k in codes) {
       message = message.replace(new RegExp(k, 'g'), codes[k])
     }
+    // hex color codes
     const hexRegex = /§#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})/
     while (message.search(hexRegex) !== -1) {
       // Stolen from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
@@ -367,6 +369,8 @@ class ChatMessage {
       // ANSI from https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#rgb-colors
       message = message.replace(hexRegex, `\u001b[38;2;${red};${green};${blue}m`)
     }
+    // add a reset before newlines so logs don't look scuffed
+    message = message.replace(/\n/g, '\u001b[0m\n')
     return message + '\u001b[0m'
   }
 
