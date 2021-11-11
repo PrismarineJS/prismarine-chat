@@ -90,8 +90,8 @@ Returns a prismarine-chat representation of the message recieved from the 'chat'
 #### setScore (name: string, objective: string) : this
 #### setClickEvent (action: string, value: object) : this
 #### setHoverEvent (action: string, data: object, type?: 'contents'|'value') : this
-#### addExtra (val: MessageBuilder | string) : this
-#### addWith (val: MessageBuilder | string) : this
+#### addExtra (...val: MessageBuilder | string) : this
+#### addWith (...val: MessageBuilder | string) : this
 #### resetFormatting () : void
 sets every one of the formatting options to false and sets text to `reset` type
 
