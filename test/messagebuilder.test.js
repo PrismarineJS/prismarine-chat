@@ -1,4 +1,6 @@
-/* eslint-env jest */
+/* eslint-env mocha */
+
+const expect = require('expect')
 
 describe('MessageBuilder', () => {
   describe('1.16.5', () => {
@@ -18,7 +20,7 @@ describe('MessageBuilder', () => {
         ['Insertion', "Hi I'm inserted!"]
       ]
       for (const [prop, val] of properties) {
-        test(`builder#set${prop}`, () => { // ex: builder#setBold
+        it(`builder#set${prop}`, () => { // ex: builder#setBold
           const msg = new MessageBuilder()[`set${prop}`](val) // ex: .setBold(true)
           const json = msg.toJSON() // ex: { bold: true}
           const propName = prop.toLowerCase() // ex: 'bold'
@@ -28,13 +30,13 @@ describe('MessageBuilder', () => {
     })
 
     describe('with/extra', () => {
-      test('no translate w/ .with', () => {
+      it('no translate w/ .with', () => {
         const msg = new MessageBuilder()
           .addWith('Hello,')
           .addWith('World.')
         expect(msg.toJSON()).toStrictEqual({})
       })
-      test('translate w/ .with', () => {
+      it('translate w/ .with', () => {
         const msg = new MessageBuilder()
           .setTranslate('chat.type.text')
           .addWith(new MessageBuilder().setText('U9G'))
@@ -46,7 +48,7 @@ describe('MessageBuilder', () => {
         expect(text).toStrictEqual('<U9G> Hello world')
       })
 
-      test('w/ .addExtra add split hello & world', () => {
+      it('w/ .addExtra add split hello & world', () => {
         const msg = new MessageBuilder()
           .addExtra(new MessageBuilder().setText('Hello'))
           .addExtra(new MessageBuilder().setText(' ').setColor('reset'))
