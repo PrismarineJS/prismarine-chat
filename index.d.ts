@@ -14,6 +14,8 @@ export declare class ChatMessage {
     displayWarning?: boolean
   )
 
+  public readonly json: any
+
   /**
    * Append one or more ChatMessages
    */
