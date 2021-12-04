@@ -1,5 +1,11 @@
 ## History
 
+### 1.4.0
+* Add a example (@u9g)
+* Add hex color code support (@U5B)
+* use rest arg to allow many withs or extras (@u9g)
+* Add missing json attribute to typescript defintions (@Paulomart & @u9g)
+
 ### 1.3.3
 * fix typings
 
