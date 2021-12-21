@@ -205,12 +205,7 @@ class ChatMessage {
   * @return {ChatMessage}
    */
   clone () {
-    return Object.assign(
-      Object.create(
-        Object.getPrototypeOf(this)
-      ),
-      this
-    )
+    return new ChatMessage(JSON.parse(JSON.stringify(this.json)))
   }
 
   /**
