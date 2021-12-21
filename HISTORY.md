@@ -1,5 +1,8 @@
 ## History
 
+### 1.4.1
+* Remake ChatMessage#clone (@u9g)
+
 ### 1.4.0
 * Add a example (@u9g)
 * Add hex color code support (@U5B)
