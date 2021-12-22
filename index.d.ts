@@ -33,6 +33,11 @@ export declare class ChatMessage
     extra?: any;
 
     /**
+     * According to comments in code, may not exist in some cases. This should probably be conditional/match the code for extra TS smarts to infer whether it exists, but for now this will work.
+     */
+    translate?: string;
+
+    /**
      * Flattens the message into plain-text, without style.
      */
     toString(language?: Language): string;
