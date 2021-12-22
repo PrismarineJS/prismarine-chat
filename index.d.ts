@@ -30,11 +30,8 @@ export declare class ChatMessage
     /**
      * Optional info with no guarantee for form or shape.
      */
-    extra?: any;
+    extra?: Array<ChatMessage>;
 
-    /**
-     * According to comments in code, may not exist in some cases. This should probably be conditional/match the code for extra TS smarts to infer whether it exists, but for now this will work.
-     */
     translate?: string;
 
     /**
