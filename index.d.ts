@@ -25,6 +25,13 @@ export declare class ChatMessage {
    * Returns a clone of the ChatMessage
    */
   clone(): ChatMessage
+  
+  /**
+   * Optional info with no guarantee for form or shape.
+   */
+  extra?: Array<ChatMessage>
+
+  translate?: string
 
   /**
    * Flattens the message into plain-text, without style.
