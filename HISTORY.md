@@ -1,5 +1,9 @@
 ## History
 
+### 1.5.0
+
+* allow ChatMessage constructor to accept strings with legacy color codes (§) be converted to new json
+
 ### 1.4.1
 * Remake ChatMessage#clone (@u9g)
 
