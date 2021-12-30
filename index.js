@@ -298,7 +298,8 @@ function loader (mcVersion) {
 
       let message = Object.keys(codes).map((code) => {
         this[code] = this[code] || parent[code]
-        if (!this[code] || this[code] === 'false') return null
+        // don't add empty strings
+        if (!this[code] || this[code] === 'false' || this.text === '') return null
         if (code === 'color') {
           // return hex codes in this format
           if (this.color.startsWith('#')) return `§${this.color}`
@@ -307,7 +308,8 @@ function loader (mcVersion) {
         return codes[code]
       }).join('')
 
-      if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}§r`
+      // don't add empty strings
+      if ((typeof this.text === 'string' || typeof this.text === 'number') && this.text !== '') message += `${this.text}§r`
       else if (this.with) {
         const args = this.with.map(entry => entry.toMotd(lang))
         const format = lang[this.translate]
