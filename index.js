@@ -298,7 +298,7 @@ function loader (mcVersion) {
 
       let message = Object.keys(codes).map((code) => {
         this[code] = this[code] || parent[code]
-        // don't add empty strings
+        // don't color code empty strings
         if (!this[code] || this[code] === 'false' || this.text === '') return null
         if (code === 'color') {
           // return hex codes in this format
