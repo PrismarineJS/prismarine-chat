@@ -257,7 +257,7 @@ function loader (mcVersion) {
         if (!format) message += args.join('')
         else message += vsprintf(format, args)
       } else if (this.translate) {
-        message += lang[this.translate]
+        message += lang[this.translate] ?? this.translate
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang)).join('')
@@ -314,7 +314,7 @@ function loader (mcVersion) {
         if (!format) message += args.join('')
         else message += vsprintf(format, args)
       } else if (this.translate) {
-        message += lang[this.translate]
+        message += lang[this.translate] ?? this.translate
       }
       if (this.extra) {
         message += this.extra.map(entry => entry.toMotd(lang, this)).join('')

@@ -34,3 +34,7 @@ it('Chat Message with multiple hex colors', () => {
   expect(msg.toMotd()).toBe('§r§#FF0000uwu §r§#0000FFowo §r§#FF0000uwu§r')
   expect(msg.toAnsi()).toBe('\u001B[0m\u001B[38;2;255;0;0muwu \u001B[0m\u001B[38;2;0;0;255mowo \u001B[0m\u001B[38;2;255;0;0muwu\u001B[0m\u001B[0m')
 })
+it('crash test', () => {
+  const msg = new ChatMessage({ translate: 'invalid.translation.tag' })
+  expect(msg.toString()).toBe('invalid.translation.tag')
+})
