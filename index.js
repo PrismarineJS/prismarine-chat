@@ -252,11 +252,13 @@ function loader (mcVersion) {
       let message = ''
       const format = lang[this.translate]
       if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
-      else if (this.with) {
+      else if (this.with && this.translate) {
         const args = this.with.map(entry => entry.toString(lang))
         if (!format) {
-          message += args.join('')
+          // Return translate like vanilla if translation doesn't exist
+          message += this.translate
         } else {
+          // Otherwise, try parsing the translation string
           try {
             message += vsprintf(format, args)
           } catch (error) {
@@ -268,12 +270,15 @@ function loader (mcVersion) {
             message += vsprintf(escapePercent, args)
           }
         }
+      } else if (this.with && !this.translate) {
+        const args = this.with.map(entry => entry.toString(lang))
+        if (!format) message += args.join('')
       } else if (this.translate) {
         if (!format) message += this.translate
         else message += lang[this.translate]
       }
       if (this.extra) {
-        message += this.extra.map((entry) => entry.toString(lang)).join('')
+        message += this.extra.map(entry => entry.toString(lang, this)).join('')
       }
       return message.replace(/§[0-9a-flnmokr]/g, '')
     }
@@ -322,11 +327,13 @@ function loader (mcVersion) {
 
       const format = lang[this.translate]
       if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}§r`
-      else if (this.with) {
+      else if (this.with && this.translate) {
         const args = this.with.map(entry => entry.toMotd(lang))
         if (!format) {
-          message += args.join('')
+          // Return translate like vanilla if translation doesn't exist
+          message += this.translate
         } else {
+          // Otherwise, try parsing the translation string
           try {
             message += vsprintf(format, args)
           } catch (error) {
@@ -338,6 +345,9 @@ function loader (mcVersion) {
             message += vsprintf(escapePercent, args)
           }
         }
+      } else if (this.with && !this.translate) {
+        const args = this.with.map(entry => entry.toMotd(lang))
+        if (!format) message += args.join('')
       } else if (this.translate) {
         if (!format) message += this.translate
         else message += lang[this.translate]
