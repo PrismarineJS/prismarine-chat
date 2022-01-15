@@ -250,14 +250,27 @@ function loader (mcVersion) {
      */
     toString (lang = defaultLang) {
       let message = ''
+      const format = lang[this.translate]
       if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
       else if (this.with) {
         const args = this.with.map(entry => entry.toString(lang))
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
+        if (!format) {
+          message += args.join('')
+        } else {
+          try {
+            message += vsprintf(format, args)
+          } catch (error) {
+            let escapePercent = format
+            // If we somehow get a translate like 'hi %': pass in 'hi %%' instead
+            // This is only if we get an error, because usually we don't need t his
+            escapePercent = escapePercent.replace(/%/g, '%%')
+            escapePercent = escapePercent.replace(/%(%\w)/, '$1')
+            message += vsprintf(escapePercent, args)
+          }
+        }
       } else if (this.translate) {
-        message += lang[this.translate] ?? this.translate
+        if (!format) message += this.translate
+        else message += lang[this.translate]
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang)).join('')
@@ -307,14 +320,27 @@ function loader (mcVersion) {
         return codes[code]
       }).join('')
 
+      const format = lang[this.translate]
       if (typeof this.text === 'string' || typeof this.text === 'number') message += `${this.text}§r`
       else if (this.with) {
         const args = this.with.map(entry => entry.toMotd(lang))
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
+        if (!format) {
+          message += args.join('')
+        } else {
+          try {
+            message += vsprintf(format, args)
+          } catch (error) {
+            let escapePercent = format
+            // If we somehow get a translate like 'hi %': pass in 'hi %%' instead
+            // This is only if we get an error, because usually we don't need t his
+            escapePercent = escapePercent.replace(/%/g, '%%')
+            escapePercent = escapePercent.replace(/%(%\w)/, '$1')
+            message += vsprintf(escapePercent, args)
+          }
+        }
       } else if (this.translate) {
-        message += lang[this.translate] ?? this.translate
+        if (!format) message += this.translate
+        else message += lang[this.translate]
       }
       if (this.extra) {
         message += this.extra.map(entry => entry.toMotd(lang, this)).join('')
