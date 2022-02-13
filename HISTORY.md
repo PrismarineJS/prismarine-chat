@@ -1,5 +1,10 @@
 ## History
 
+### 1.6.0
+
+* Added number type to getText()'s idx argument
+* Remove resets on empty strings
+
 ### 1.5.0
 
 * allow ChatMessage constructor to accept strings with legacy color codes (§) be converted to new json
