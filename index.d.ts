@@ -195,7 +195,6 @@ export = loader
 
 type Language = { [key: string]: string }
 
-
 type Color =
   | "black"
   | "dark_blue"
