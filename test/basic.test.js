@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const ChatMessage = require('prismarine-chat')('1.16')
-const expect = require('expect')
+const expect = require('expect').default
 
 it('Parsing a chat message', () => {
   const msg = new ChatMessage({ text: 'Example chat message' })
