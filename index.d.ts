@@ -1,8 +1,6 @@
 declare const loader: (mcVersion: string) => typeof ChatMessage
 
-export default loader
-
-export declare class ChatMessage {
+declare class ChatMessage {
   // for export
   static MessageBuilder: typeof MessageBuilder
 
@@ -70,9 +68,7 @@ export declare class ChatMessage {
   static fromNotch(str: string): ChatMessage
 }
 
-type Language = { [key: string]: string }
-
-export declare class MessageBuilder {
+declare class MessageBuilder {
   with: string[]
   extra: string[]
   bold?: boolean
@@ -193,6 +189,11 @@ export declare class MessageBuilder {
     args?: { colorSeparator?: string }
   ): MessageBuilder
 }
+
+loader.ChatMessage = typeof ChatMessage
+export = loader
+
+type Language = { [key: string]: string }
 
 type Color =
   | "black"
