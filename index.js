@@ -287,7 +287,8 @@ function loader (mcVersion) {
           red: '§c',
           light_purple: '§d',
           yellow: '§e',
-          white: '§f'
+          white: '§f',
+          reset: '§r'
         },
         bold: '§l',
         italic: '§o',
@@ -298,8 +299,7 @@ function loader (mcVersion) {
 
       let message = Object.keys(codes).map((code) => {
         this[code] = this[code] || parent[code]
-        // don't color code empty strings
-        if (!this[code] || this[code] === 'false' || this.text === '') return null
+        if (!this[code] || this[code] === 'false'/* || this.text === '' */) return null
         if (code === 'color') {
           // return hex codes in this format
           if (this.color.startsWith('#')) return `§${this.color}`
@@ -308,10 +308,12 @@ function loader (mcVersion) {
         return codes[code]
       }).join('')
 
-      // don't add empty strings
-      if ((typeof this.text === 'string' || typeof this.text === 'number') && this.text !== '') message += `${this.text}§r`
+      if ((typeof this.text === 'string' || typeof this.text === 'number')/* && this.text !== '' */) message += this.text
       else if (this.with) {
-        const args = this.with.map(entry => entry.toMotd(lang))
+        const args = this.with.map(entry => {
+          const entryAsMotd = entry.toMotd(lang, this)
+          return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
+        })
         const format = lang[this.translate]
         if (!format) message += args.join('')
         else message += vsprintf(format, args)
@@ -365,7 +367,7 @@ function loader (mcVersion) {
         // ANSI from https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#rgb-colors
         message = message.replace(hexRegex, `\u001b[38;2;${red};${green};${blue}m`)
       }
-      return message + '\u001b[0m'
+      return codes['§r'] + message + codes['§r']
     }
 
     static fromNotch (msg) {
