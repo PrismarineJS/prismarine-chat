@@ -1,4 +1,6 @@
-declare const loader: (mcVersion: string) => typeof ChatMessage
+import Registry from 'prismarine-registry'
+
+declare const loader: (registry: Registry) => typeof ChatMessage
 
 declare class ChatMessage {
   // for export
@@ -188,6 +190,9 @@ declare class MessageBuilder {
     str: string,
     args?: { colorSeparator?: string }
   ): MessageBuilder
+
+  // 1.19+
+  static fromNetwork (messageType: number, parameters: Record<String, Object>): MessageBuilder
 }
 
 loader.ChatMessage = typeof ChatMessage

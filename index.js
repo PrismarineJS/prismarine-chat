@@ -3,10 +3,10 @@ const vsprintf = require('sprintf-js').vsprintf
 
 module.exports = loader
 
-function loader (mcVersion) {
-  const mcData = require('minecraft-data')(mcVersion)
-  const defaultLang = mcData.language
-  const { MessageBuilder } = require('./MessageBuilder')(mcVersion)
+function loader (registryOrVersion) {
+  const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
+  const defaultLang = registry.language
+  const { MessageBuilder } = require('./MessageBuilder')(registry)
 
   /**
    * ChatMessage Constructor
@@ -378,6 +378,31 @@ function loader (mcVersion) {
         toRet = new ChatMessage(msg)
       }
       return toRet
+    }
+
+    // 1.19 applies chat formatting on the client side. A format string is provided like in C printf
+    // syntax, including positional arguments which we poll from the supplied parameters map.
+    // For example,
+    //  printf("<%s> %s" /* fmt string */, [sender], [content])
+    static fromNetwork (type, params) {
+      const msg = new ChatMessage('')
+      const format = registry.chatFormattingById[type]
+      const fstr = format.formatString
+      const slices = []
+      for (let i = 0, j = 0, k = 0; i < fstr.length; i++) {
+        const c = fstr[i]
+        const cNext = fstr[i + 1]
+        if (c === '%' && cNext === 's') {
+          slices.push(fstr.slice(j, i), new ChatMessage(params[format.parameters[k++]]))
+          i++
+          j = i + 1
+          continue
+        } else if (cNext == null) {
+          slices.push(fstr.slice(j))
+        }
+      }
+      for (const slice of slices) msg.append(slice)
+      return msg
     }
   }
 
