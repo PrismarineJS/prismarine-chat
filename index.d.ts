@@ -1,4 +1,4 @@
-declare const loader: (mcVersion: string) => typeof ChatMessage
+declare const loader: (registryOrVersion) => typeof ChatMessage
 
 declare class ChatMessage {
   // for export
@@ -188,6 +188,9 @@ declare class MessageBuilder {
     str: string,
     args?: { colorSeparator?: string }
   ): MessageBuilder
+
+  // 1.19+
+  static fromNetwork (messageType: number, parameters: Record<String, Object>): MessageBuilder
 }
 
 loader.ChatMessage = typeof ChatMessage
