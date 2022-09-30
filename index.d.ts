@@ -1,6 +1,4 @@
-import Registry from 'prismarine-registry'
-
-declare const loader: (registry: Registry) => typeof ChatMessage
+declare const loader: (registryOrVersion) => typeof ChatMessage
 
 declare class ChatMessage {
   // for export
