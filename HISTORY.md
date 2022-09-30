@@ -1,5 +1,10 @@
 ## History
 
+### 1.7.0
+
+* Support 1.19 client side message formatting (@extremeheat)
+* Fix motd color codes bleeding through their with block (@U9g)
+
 ### 1.6.1
 
 * Update mcdata
