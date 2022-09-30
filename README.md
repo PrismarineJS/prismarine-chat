@@ -71,6 +71,10 @@ console.log(JSON.stringify(msg)) // The string as a message component
 
 Returns a prismarine-chat representation of the message recieved from the 'chat' packet, example shown [here](examples/minecraftprotocol_fromnotch/fromnotch.js)
 
+#### static ChatMessage.fromNetwork(messageType, messageParameters)
+
+(1.19+) Loads a chat message sent by server that needs to be formatted on client side.
+
 ### MessageBuilder()
 
 #### setBold (val: boolean) : this
