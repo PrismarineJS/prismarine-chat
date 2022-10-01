@@ -1,6 +1,6 @@
 {
   "name": "prismarine-chat",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Wrapper for a minecraft chat message",
   "main": "index.js",
   "scripts": {
