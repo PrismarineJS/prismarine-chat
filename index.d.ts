@@ -190,11 +190,13 @@ declare class MessageBuilder {
   ): MessageBuilder
 
   // 1.19+
-  static fromNetwork (messageType: number, parameters: Record<String, Object>): MessageBuilder
+  static fromNetwork (messageType: number, parameters: Record<string, Object>): MessageBuilder
 }
 
-loader.ChatMessage = typeof ChatMessage
-export = loader
+export default loader
+export {
+  ChatMessage
+}
 
 type Language = { [key: string]: string }
 
