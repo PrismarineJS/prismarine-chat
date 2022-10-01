@@ -1,5 +1,9 @@
 ## History
 
+### 1.7.1
+
+* Fix release 
+
 ### 1.7.0
 
 * Support 1.19 client side message formatting (@extremeheat)
