@@ -1,5 +1,9 @@
 ## History
 
+### 1.7.2
+
+* Fix broken type definitions (@IceTank) [#81](https://github.com/PrismarineJS/prismarine-chat/pull/81)
+
 ### 1.7.1
 
 * Fix release 
