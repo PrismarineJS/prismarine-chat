@@ -257,7 +257,7 @@ function loader (registryOrVersion) {
         try {
           message += vsprintf(format, args)
         } catch (err) {
-
+          message += format
         }
       } else if (this.translate) {
         message += lang[this.translate] ?? this.translate
@@ -321,7 +321,7 @@ function loader (registryOrVersion) {
         try {
           message += vsprintf(format, args)
         } catch (err) {
-
+          message += format
         }
       } else if (this.translate) {
         message += lang[this.translate] ?? this.translate
