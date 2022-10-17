@@ -253,11 +253,14 @@ function loader (registryOrVersion) {
       if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
       else if (this.with) {
         const args = this.with.map(entry => entry.toString(lang))
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
+        const format = lang[this.translate] ?? this.translate
+        try {
+          message += vsprintf(format, args)
+        } catch (err) {
+
+        }
       } else if (this.translate) {
-        message += lang[this.translate]
+        message += lang[this.translate] ?? this.translate
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang)).join('')
@@ -314,11 +317,14 @@ function loader (registryOrVersion) {
           const entryAsMotd = entry.toMotd(lang, this)
           return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
         })
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
+        const format = lang[this.translate] ?? this.translate
+        try {
+          message += vsprintf(format, args)
+        } catch (err) {
+
+        }
       } else if (this.translate) {
-        message += lang[this.translate]
+        message += lang[this.translate] ?? this.translate
       }
       if (this.extra) {
         message += this.extra.map(entry => entry.toMotd(lang, this)).join('')
