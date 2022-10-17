@@ -75,6 +75,11 @@ describe('Parsing chat on 1.16', function () {
     console.log(msg.toAnsi())
     expect(msg.toAnsi()).toBe('\u001b[0m\u001b[94m<\u001b[96mIM_U9G\u001b[0m\u001b[94m> \u001b[92myo sup\u001b[0m\u001b[94m\u001b[0m')
   })
+
+  it('Parsing a message with a translation key that does not exist in the language', () => {
+    const msg = new ChatMessage({ translate: 'Hello, %s!', with: ['world'] })
+    expect(msg.toString()).toBe('Hello, world!')
+  })
 })
 
 describe('Client-side chat formatting', function () {
