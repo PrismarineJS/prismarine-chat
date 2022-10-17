@@ -85,6 +85,16 @@ describe('Parsing chat on 1.16', function () {
     const msg = new ChatMessage({ translate: 'translation.test.invalid', with: ['something'] })
     expect(msg.toString()).toBe('hi %')
   })
+
+  it('Parsing a translate message with missing elements in with', () => {
+    const msg = new ChatMessage({ translate: '%2$s %1$s', with: ['a'] })
+    expect(msg.toString()).toBe(' a')
+  })
+
+  it('Parsing a translate message without with', () => {
+    const msg = new ChatMessage({ translate: '%2$s %1$s' })
+    expect(msg.toString()).toBe(' ')
+  })
 })
 
 describe('Client-side chat formatting', function () {

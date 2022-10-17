@@ -1,5 +1,5 @@
 const mojangson = require('mojangson')
-const vsprintf = require('sprintf-js').vsprintf
+const vsprintf = require('./format')
 
 module.exports = loader
 
@@ -251,16 +251,13 @@ function loader (registryOrVersion) {
     toString (lang = defaultLang) {
       let message = ''
       if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
-      else if (this.with) {
-        const args = this.with.map(entry => entry.toString(lang))
+      else if (this.translate !== undefined) {
+        const _with = this.with ?? []
+
+        const args = _with.map(entry => entry.toString(lang))
         const format = lang[this.translate] ?? this.translate
-        try {
-          message += vsprintf(format, args)
-        } catch (err) {
-          message += format
-        }
-      } else if (this.translate) {
-        message += lang[this.translate] ?? this.translate
+
+        message += vsprintf(format, args)
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang)).join('')
@@ -312,19 +309,16 @@ function loader (registryOrVersion) {
       }).join('')
 
       if ((typeof this.text === 'string' || typeof this.text === 'number')/* && this.text !== '' */) message += this.text
-      else if (this.with) {
-        const args = this.with.map(entry => {
+      else if (this.translate !== undefined) {
+        const _with = this.with ?? []
+
+        const args = _with.map(entry => {
           const entryAsMotd = entry.toMotd(lang, this)
           return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
         })
         const format = lang[this.translate] ?? this.translate
-        try {
-          message += vsprintf(format, args)
-        } catch (err) {
-          message += format
-        }
-      } else if (this.translate) {
-        message += lang[this.translate] ?? this.translate
+
+        message += vsprintf(format, args)
       }
       if (this.extra) {
         message += this.extra.map(entry => entry.toMotd(lang, this)).join('')
