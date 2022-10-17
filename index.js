@@ -391,24 +391,8 @@ function loader (registryOrVersion) {
     // For example,
     //  printf("<%s> %s" /* fmt string */, [sender], [content])
     static fromNetwork (type, params) {
-      const msg = new ChatMessage('')
       const format = registry.chatFormattingById[type]
-      const fstr = format.formatString
-      const slices = []
-      for (let i = 0, j = 0, k = 0; i < fstr.length; i++) {
-        const c = fstr[i]
-        const cNext = fstr[i + 1]
-        if (c === '%' && cNext === 's') {
-          slices.push(fstr.slice(j, i), new ChatMessage(params[format.parameters[k++]]))
-          i++
-          j = i + 1
-          continue
-        } else if (cNext == null) {
-          slices.push(fstr.slice(j))
-        }
-      }
-      for (const slice of slices) msg.append(slice)
-      return msg
+      return new ChatMessage({ translate: format.formatString, with: format.parameters.map(p => params[p]) })
     }
   }
 
