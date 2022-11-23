@@ -63,15 +63,15 @@ describe('MessageBuilder', () => {
 
     describe('MessageBuilder#fromColorCodeString', () => {
       const tests = [
-        ['&0&l[&4&lYou&f&lTube&0&l]', '{"color":"black","text":"","extra":[{"bold":true,"text":"[","extra":[{"color":"dark_red","text":"","extra":[{"bold":true,"text":"You","extra":[{"color":"white","text":"","extra":[{"bold":true,"text":"Tube","extra":[{"color":"black","text":"","extra":[{"bold":true,"text":"]"}]}]}]}]}]}]}]}'],
-        ['&0&l[&4You&fTube&0]', '{"color":"black","text":"","extra":[{"bold":true,"text":"[","extra":[{"color":"dark_red","text":"You","extra":[{"color":"white","text":"Tube","extra":[{"color":"black","text":"]"}]}]}]}]}'],
-        ['Hello world!', '{"text":"Hello world!"}']
+        ['&0&l[&4&lYou&f&lTube&0&l]', { text: '', extra: [{ color: 'black', bold: true, text: '[' }, { color: 'dark_red', bold: true, text: 'You' }, { color: 'white', bold: true, text: 'Tube' }, { color: 'black', bold: true, text: ']' }] }],
+        ['&0&l[&4You&fTube&0]', { text: '', extra: [{ color: 'black', bold: true, text: '[' }, { color: 'dark_red', text: 'You' }, { color: 'white', text: 'Tube' }, { color: 'black', text: ']' }] }],
+        ['Hello world!', { text: 'Hello world!' }]
       ]
       let i = 0
       for (const [before, after] of tests) {
         it(`Test ${i++}`, () => {
-          const json = JSON.stringify(MessageBuilder.fromString(before))
-          expect(json).toStrictEqual(after)
+          const msg = MessageBuilder.fromString(before)
+          expect(msg.toJSON()).toStrictEqual(after) // deep equality
         })
       }
     })

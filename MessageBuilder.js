@@ -174,7 +174,7 @@ function loader (registry) {
       this.setUnderlined(false)
       this.setStrikethrough(false)
       this.setObfuscated(false)
-      this.setColor('reset')
+      this.setColor('white')
     }
 
     toJSON () {
@@ -212,42 +212,45 @@ function loader (registry) {
     }
 
     static fromString (str, { colorSeparator = '&' } = {}) {
-      let lastObj = null
-      let currString = ''
-      for (let i = str.length - 1; i > -1; i--) {
-        const char = str.substring(i, i + 1)
-        if (char !== colorSeparator) currString += char
+      let current = new this().setText('')
+      let message
+      for (let i = 0; i < str.length; i++) {
+        const char = str[i]
+        if (char !== colorSeparator) current.setText(current.text + char)
         else {
-          const text = currString.split('').reverse()
-          const color = supportedColors[text.shift()]
-          const newObj = new MessageBuilder()
-          if (color === 'obfuscated') {
-            newObj.setObfuscated(true)
-          } else if (color === 'bold') {
-            newObj.setBold(true)
-          } else if (color === 'strikethrough') {
-            newObj.setStrikethrough(true)
-          } else if (color === 'underlined') {
-            newObj.setUnderlined(true)
-          } else if (color === 'italic') {
-            newObj.setItalic(true)
-          } else if (color === 'reset') {
-            newObj.resetFormatting()
-          } else {
-            newObj.setColor(color)
+          // Prevent formatting from getting on the root component
+          const currentWasReset = message === undefined
+          if (currentWasReset) {
+            message = current
+            current = new this().setText('')
           }
-          newObj.setText(text.join(''))
-          if (lastObj === null) lastObj = newObj
-          else lastObj = newObj.addExtra(lastObj)
-          currString = ''
+
+          const color = supportedColors[str[i + 1]]
+
+          if (color === 'obfuscated') current.setObfuscated(true)
+          else if (color === 'bold') current.setBold(true)
+          else if (color === 'strikethrough') current.setStrikethrough(true)
+          else if (color === 'underlined') current.setUnderlined(true)
+          else if (color === 'italic') current.setItalic(true)
+          else if (color === 'reset'); // ignore
+          else if (color !== undefined) {
+            // Reset the current component if needed
+            if (!currentWasReset) {
+              if (current.text !== '') message.addExtra(current)
+              current = new this().setText('')
+            }
+
+            current.setColor(color)
+          }
+
+          i++
         }
       }
-      if (currString !== '') {
-        const txt = currString.split('').reverse().join('')
-        if (lastObj !== null) lastObj = new MessageBuilder().setText(txt).addExtra(lastObj)
-        else lastObj = new MessageBuilder().setText(txt)
-      }
-      return lastObj
+
+      if (message === undefined) message = current
+      else if (current.text !== '') message.addExtra(current)
+
+      return message
     }
   }
 
