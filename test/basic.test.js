@@ -75,6 +75,26 @@ describe('Parsing chat on 1.16', function () {
     console.log(msg.toAnsi())
     expect(msg.toAnsi()).toBe('\u001b[0m\u001b[94m<\u001b[96mIM_U9G\u001b[0m\u001b[94m> \u001b[92myo sup\u001b[0m\u001b[94m\u001b[0m')
   })
+
+  it('Parsing a message with a translation key that does not exist in the language', () => {
+    const msg = new ChatMessage({ translate: 'Hello, %s!', with: ['world'] })
+    expect(msg.toString()).toBe('Hello, world!')
+  })
+
+  it('Parsing a message with an invalid translation', () => {
+    const msg = new ChatMessage({ translate: 'translation.test.invalid', with: ['something'] })
+    expect(msg.toString()).toBe('hi %')
+  })
+
+  it('Parsing a translate message with missing elements in with', () => {
+    const msg = new ChatMessage({ translate: '%2$s %1$s', with: ['a'] })
+    expect(msg.toString()).toBe(' a')
+  })
+
+  it('Parsing a translate message without with', () => {
+    const msg = new ChatMessage({ translate: '%2$s %1$s' })
+    expect(msg.toString()).toBe(' ')
+  })
 })
 
 describe('Client-side chat formatting', function () {

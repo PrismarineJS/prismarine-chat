@@ -1,5 +1,5 @@
 const mojangson = require('mojangson')
-const vsprintf = require('sprintf-js').vsprintf
+const vsprintf = require('./format')
 
 module.exports = loader
 
@@ -251,13 +251,13 @@ function loader (registryOrVersion) {
     toString (lang = defaultLang) {
       let message = ''
       if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
-      else if (this.with) {
-        const args = this.with.map(entry => entry.toString(lang))
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
-      } else if (this.translate) {
-        message += lang[this.translate]
+      else if (this.translate !== undefined) {
+        const _with = this.with ?? []
+
+        const args = _with.map(entry => entry.toString(lang))
+        const format = lang[this.translate] ?? this.translate
+
+        message += vsprintf(format, args)
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang)).join('')
@@ -309,16 +309,16 @@ function loader (registryOrVersion) {
       }).join('')
 
       if ((typeof this.text === 'string' || typeof this.text === 'number')/* && this.text !== '' */) message += this.text
-      else if (this.with) {
-        const args = this.with.map(entry => {
+      else if (this.translate !== undefined) {
+        const _with = this.with ?? []
+
+        const args = _with.map(entry => {
           const entryAsMotd = entry.toMotd(lang, this)
           return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
         })
-        const format = lang[this.translate]
-        if (!format) message += args.join('')
-        else message += vsprintf(format, args)
-      } else if (this.translate) {
-        message += lang[this.translate]
+        const format = lang[this.translate] ?? this.translate
+
+        message += vsprintf(format, args)
       }
       if (this.extra) {
         message += this.extra.map(entry => entry.toMotd(lang, this)).join('')
@@ -385,24 +385,8 @@ function loader (registryOrVersion) {
     // For example,
     //  printf("<%s> %s" /* fmt string */, [sender], [content])
     static fromNetwork (type, params) {
-      const msg = new ChatMessage('')
       const format = registry.chatFormattingById[type]
-      const fstr = format.formatString
-      const slices = []
-      for (let i = 0, j = 0, k = 0; i < fstr.length; i++) {
-        const c = fstr[i]
-        const cNext = fstr[i + 1]
-        if (c === '%' && cNext === 's') {
-          slices.push(fstr.slice(j, i), new ChatMessage(params[format.parameters[k++]]))
-          i++
-          j = i + 1
-          continue
-        } else if (cNext == null) {
-          slices.push(fstr.slice(j))
-        }
-      }
-      for (const slice of slices) msg.append(slice)
-      return msg
+      return new ChatMessage({ translate: format.formatString, with: format.parameters.map(p => params[p]) })
     }
   }
 

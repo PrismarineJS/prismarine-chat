@@ -33,7 +33,6 @@
     "mojangson": "^2.0.1",
     "prismarine-item": "^1.10.0",
     "prismarine-nbt": "^2.0.0",
-    "prismarine-registry": "^1.4.0",
-    "sprintf-js": "^1.1.2"
+    "prismarine-registry": "^1.4.0"
   }
 }
