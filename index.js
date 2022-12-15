@@ -6,6 +6,30 @@ module.exports = loader
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   const defaultLang = registry.language
+  const defaultAnsiCodes = {
+    '§0': '\u001b[30m',
+    '§1': '\u001b[34m',
+    '§2': '\u001b[32m',
+    '§3': '\u001b[36m',
+    '§4': '\u001b[31m',
+    '§5': '\u001b[35m',
+    '§6': '\u001b[33m',
+    '§7': '\u001b[37m',
+    '§8': '\u001b[90m',
+    '§9': '\u001b[94m',
+    '§a': '\u001b[92m',
+    '§b': '\u001b[96m',
+    '§c': '\u001b[91m',
+    '§d': '\u001b[95m',
+    '§e': '\u001b[93m',
+    '§f': '\u001b[97m',
+    '§l': '\u001b[1m',
+    '§o': '\u001b[3m',
+    '§n': '\u001b[4m',
+    '§m': '\u001b[9m',
+    '§k': '\u001b[6m',
+    '§r': '\u001b[0m'
+  }
   const { MessageBuilder } = require('./MessageBuilder')(registry)
 
   /**
@@ -326,31 +350,7 @@ function loader (registryOrVersion) {
       return message
     }
 
-    toAnsi (lang = defaultLang) {
-      const codes = {
-        '§0': '\u001b[30m',
-        '§1': '\u001b[34m',
-        '§2': '\u001b[32m',
-        '§3': '\u001b[36m',
-        '§4': '\u001b[31m',
-        '§5': '\u001b[35m',
-        '§6': '\u001b[33m',
-        '§7': '\u001b[37m',
-        '§8': '\u001b[90m',
-        '§9': '\u001b[94m',
-        '§a': '\u001b[92m',
-        '§b': '\u001b[96m',
-        '§c': '\u001b[91m',
-        '§d': '\u001b[95m',
-        '§e': '\u001b[93m',
-        '§f': '\u001b[97m',
-        '§l': '\u001b[1m',
-        '§o': '\u001b[3m',
-        '§n': '\u001b[4m',
-        '§m': '\u001b[9m',
-        '§k': '\u001b[6m',
-        '§r': '\u001b[0m'
-      }
+    toAnsi (lang = defaultLang, codes = defaultAnsiCodes) {
 
       let message = this.toMotd(lang)
       for (const k in codes) {

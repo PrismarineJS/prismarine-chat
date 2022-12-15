@@ -42,10 +42,11 @@ Returns a text part from the message
  * `idx` - Index of the part
  * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
 
-#### chat.toAnsi([lang])
+#### chat.toAnsi([lang], [codes])
 
 Converts to ansi format
  * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
+ * `codes` - (optional) - Specify which ANSI formatting codes should be used for each Minecraft color code
 
 #### chat.length()
 
