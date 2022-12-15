@@ -351,7 +351,6 @@ function loader (registryOrVersion) {
     }
 
     toAnsi (lang = defaultLang, codes = defaultAnsiCodes) {
-
       let message = this.toMotd(lang)
       for (const k in codes) {
         message = message.replace(new RegExp(k, 'g'), codes[k])
