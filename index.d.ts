@@ -1,4 +1,4 @@
-declare const loader: (registryOrVersion) => typeof ChatMessage
+declare const loader: (registryOrVersion: string) => typeof ChatMessage
 
 declare class ChatMessage {
   // for export
