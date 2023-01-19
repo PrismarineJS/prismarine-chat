@@ -1,5 +1,11 @@
 ## History
 
+### 1.8.0
+
+* Better translation handling (@ChipmunkMC)
+* Allow specifying which ANSI formatting codes to use (@GhqstMC)
+* Added a missing type in the loader (@Jarco-dev)
+
 ### 1.7.2
 
 * Fix broken type definitions (@IceTank) [#81](https://github.com/PrismarineJS/prismarine-chat/pull/81)
