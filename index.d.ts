@@ -66,6 +66,9 @@ declare class ChatMessage {
   valueOf(): string
 
   static fromNotch(str: string): ChatMessage
+  
+  // 1.19+
+  static fromNetwork(messageType: number, parameters: Record<string, Object>): ChatMessage
 }
 
 declare class MessageBuilder {
