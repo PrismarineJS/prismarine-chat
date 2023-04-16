@@ -95,6 +95,12 @@ describe('Parsing chat on 1.16', function () {
     const msg = new ChatMessage({ translate: '%2$s %1$s' })
     expect(msg.toString()).toBe(' ')
   })
+
+  it('can format to HTML', () => {
+    const msg = new ChatMessage({ color: 'blue', translate: 'chat.type.text', with: [{ text: 'IM_U9G', color: 'aqua' }, { text: 'yo sup', color: 'green' }], extra: [{ text: 'test', color: '#ff0000', strikethrough: true }] })
+    assert.strictEqual(msg.toHTML(), '<span style="color:#5555FF">&lt;<span style="color:#55FFFF">IM_U9G</span>&gt; <span style="color:#55FF55">yo sup</span></span><span style="color:rgb(255,0,0);text-decoration:line-through">test</span>')
+    assert.strictEqual(msg.toHTML(undefined, undefined, ['color']), '<span style="color:#5555FF">&lt;<span style="color:#55FFFF">IM_U9G</span>&gt; <span style="color:#55FF55">yo sup</span></span><span style="color:rgb(255,0,0)">test</span>')
+  })
 })
 
 describe('Client-side chat formatting', function () {
