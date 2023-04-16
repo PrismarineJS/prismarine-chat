@@ -51,7 +51,7 @@ Converts to ansi format
 #### chat.toHTML([lang], [codes], [allowedFormats])
 Converts to escaped HTML
 * `lang` - (optional) - Set a custom lang (defaults to registry.language)
-* `codes` - (optional) - Specify which ANSI formatting codes should be used for each Minecraft color code
+* `codes` - (optional) - Specify which CSS style props should be used for each Minecraft color code
 * `allowedFormats` - The set of allowed formats. Default is ['color', 'bold', 'strikethrough', 'underlined', 'italic']
 
 #### chat.length()
