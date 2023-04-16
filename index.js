@@ -417,12 +417,11 @@ function loader (registryOrVersion) {
         const format = lang[this.translate] ?? this.translate
         str += vsprintf(escapeHtml(format), params)
       }
-      str += '</span>'
 
       if (this.extra) {
         str += this.extra.map(entry => entry.toHTML(lang, styles, allowedFormats)).join('')
       }
-
+      str += '</span>'
       return str
     }
 
