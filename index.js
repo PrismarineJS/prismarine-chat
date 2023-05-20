@@ -30,6 +30,29 @@ function loader (registryOrVersion) {
     '§k': '\u001b[6m',
     '§r': '\u001b[0m'
   }
+  const cssDefaultStyles = {
+    black: 'color:#000000',
+    dark_blue: 'color:#0000AA',
+    dark_green: 'color:#00AA00',
+    dark_aqua: 'color:#00AAAA',
+    dark_red: 'color:#AA0000',
+    dark_purple: 'color:#AA00AA',
+    gold: 'color:#FFAA00',
+    gray: 'color:#AAAAAA',
+    dark_gray: 'color:#555555',
+    blue: 'color:#5555FF',
+    green: 'color:#55FF55',
+    aqua: 'color:#55FFFF',
+    red: 'color:#FF5555',
+    light_purple: 'color:#FF55FF',
+    yellow: 'color:#FFFF55',
+    white: 'color:#FFFFFF',
+    bold: 'font-weight:900',
+    strikethrough: 'text-decoration:line-through',
+    underlined: 'text-decoration:underline',
+    italic: 'font-style:italic'
+  }
+  const formatMembers = ['color', 'bold', 'strikethrough', 'underlined', 'italic']
   const { MessageBuilder } = require('./MessageBuilder')(registry)
 
   /**
@@ -369,6 +392,39 @@ function loader (registryOrVersion) {
       return codes['§r'] + message + codes['§r']
     }
 
+    // NOTE : Have to be be mindful here as bad HTML gen may lead to arbitrary code execution from server
+    toHTML (lang = registry.language, styles = cssDefaultStyles, allowedFormats = formatMembers) {
+      let str = ''
+      if (allowedFormats.some(member => this[member])) {
+        const cssProps = allowedFormats.reduce((acc, cur) => this[cur]
+          ? acc.push(cur === 'color'
+            ? (this.color.startsWith('#') ? escapeRGB(this.color.slice(1)) : styles[this.color])
+            : styles[cur]) &&
+            acc
+          : acc, [])
+        str += `<span style="${cssProps.join(';')}">`
+      } else {
+        str += '<span>'
+      }
+
+      if (this.text) {
+        str += escapeHtml(this.text)
+      } else if (this.translate) {
+        const params = []
+        for (const param of this.with) {
+          params.push(param.toHTML(lang, styles, allowedFormats))
+        }
+        const format = lang[this.translate] ?? this.translate
+        str += vsprintf(escapeHtml(format), params)
+      }
+
+      if (this.extra) {
+        str += this.extra.map(entry => entry.toHTML(lang, styles, allowedFormats)).join('')
+      }
+      str += '</span>'
+      return str
+    }
+
     static fromNotch (msg) {
       let toRet
       try {
@@ -392,3 +448,6 @@ function loader (registryOrVersion) {
   ChatMessage.MessageBuilder = MessageBuilder
   return ChatMessage
 }
+
+const escapeHtml = (unsafe) => unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;')
+const escapeRGB = (unsafe) => `color:rgb(${unsafe.match(/.{2}/g).map(e => parseInt(e, 16)).join(',')})`

@@ -49,6 +49,11 @@ declare class ChatMessage {
   toAnsi(language?: Language): string
 
   /**
+   * Returns a CSS styled and escaped HTML string
+   */
+  toHTML(language?: Language, styles?: Record<Color, string>, allowedFormats?: DefaultFormats): string
+
+  /**
    * Returns the count of text extras and child ChatMessages.
    * Does not count recursively in to the children.
    */
@@ -226,3 +231,4 @@ type Color =
   | "underlined"
   | "italic"
   | "reset"
+type DefaultFormats = 'color' | 'bold' | 'strikethrough' | 'underlined' | 'italic'

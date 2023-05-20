@@ -28,25 +28,31 @@ console.log(msg.toString()) // Example chat message
 #### chat.toString([lang])
 
 Flattens the message in to plain-text
- * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
+ * `lang` - (optional) - Set a custom lang (defaults to registry.language)
 
 #### chat.toMotd([lang], parent)
 
 Converts to motd format
- * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
+ * `lang` - (optional) - Set a custom lang (defaults to registry.language)
  * `parent` - Set a custom lang (defaults to mcData.language)
 
 #### chat.getText(idx, [lang])
 
 Returns a text part from the message
  * `idx` - Index of the part
- * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
+ * `lang` - (optional) - Set a custom lang (defaults to registry.language)
 
 #### chat.toAnsi([lang], [codes])
 
 Converts to ansi format
- * `lang` - (optional) - Set a custom lang (defaults to mcData.language)
+ * `lang` - (optional) - Set a custom lang (defaults to registry.language)
  * `codes` - (optional) - Specify which ANSI formatting codes should be used for each Minecraft color code
+
+#### chat.toHTML([lang], [codes], [allowedFormats])
+Converts to escaped HTML
+* `lang` - (optional) - Set a custom lang (defaults to registry.language)
+* `codes` - (optional) - Specify which CSS style props should be used for each Minecraft color code
+* `allowedFormats` - The set of allowed formats. Default is ['color', 'bold', 'strikethrough', 'underlined', 'italic']
 
 #### chat.length()
 
