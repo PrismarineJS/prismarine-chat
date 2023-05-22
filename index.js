@@ -411,8 +411,10 @@ function loader (registryOrVersion) {
         str += escapeHtml(this.text)
       } else if (this.translate) {
         const params = []
-        for (const param of this.with) {
-          params.push(param.toHTML(lang, styles, allowedFormats))
+        if (this.with) {
+          for (const param of this.with) {
+            params.push(param.toHTML(lang, styles, allowedFormats))
+          }
         }
         const format = lang[this.translate] ?? this.translate
         str += vsprintf(escapeHtml(format), params)
