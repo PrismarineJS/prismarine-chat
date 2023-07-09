@@ -85,7 +85,7 @@ function loader (registryOrVersion) {
      * @return {void}
      */
     parse (displayWarning = false) {
-      const json = this.json
+      const json = this.json ?? ''
       // Message scope for callback functions
       // There is EITHER, a text property or a translate property
       // If there is no translate property, there is no with property
