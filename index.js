@@ -78,8 +78,8 @@ function loader (registryOrVersion) {
       } else {
         throw new Error('Expected String or Object for Message argument')
       }
-      this.parse(displayWarning)
       this.warn = displayWarning ? console.warn : debug
+      this.parse(displayWarning)
     }
 
     /**
