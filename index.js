@@ -1,7 +1,9 @@
 const mojangson = require('mojangson')
 const vsprintf = require('./format')
+const debug = require('debug')('minecraft-protocol')
 
 module.exports = loader
+const getValueSafely = (obj, key, def) => Object.keys(obj).includes(key) ? obj[key] : def
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
@@ -77,6 +79,7 @@ function loader (registryOrVersion) {
         throw new Error('Expected String or Object for Message argument')
       }
       this.parse(displayWarning)
+      this.warn = displayWarning ? console.warn : debug
     }
 
     /**
@@ -84,7 +87,7 @@ function loader (registryOrVersion) {
      * Called by the Constructor
      * @return {void}
      */
-    parse (displayWarning = false) {
+    parse () {
       const json = this.json
       // Message scope for callback functions
       // There is EITHER, a text property or a translate property
@@ -183,10 +186,9 @@ function loader (registryOrVersion) {
           break
       }
       // Make sure color is valid
-      if (Array.prototype.indexOf && this.color &&
-        supportedColors.indexOf(this.color) === -1 &&
-        !this.color.match(/#[a-fA-F\d]{6}/) && displayWarning) {
-        console.warn('ChatMessage parsed with unsupported color', this.color)
+      if (this.color && !supportedColors.includes(this.color) && !this.color.match(/#[a-fA-F\d]{6}/)) {
+        this.warn('ChatMessage parsed with unsupported color', this.color)
+        this.color = null
       }
 
       // Parse click event
@@ -194,8 +196,8 @@ function loader (registryOrVersion) {
         this.clickEvent = json.clickEvent
         if (typeof this.clickEvent.action !== 'string') {
           throw new Error('ClickEvent action missing in ChatMessage')
-        } else if (Array.prototype.indexOf && supportedClick.indexOf(this.clickEvent.action) === -1 && displayWarning) {
-          console.warn('ChatMessage parsed with unsupported clickEvent', this.clickEvent.action)
+        } else if (!supportedClick.includes(this.clickEvent.action)) {
+          this.warn('ChatMessage parsed with unsupported clickEvent', this.clickEvent.action)
         }
       }
 
@@ -204,8 +206,8 @@ function loader (registryOrVersion) {
         this.hoverEvent = json.hoverEvent
         if (typeof this.hoverEvent.action !== 'string') {
           throw new Error('HoverEvent action missing in ChatMessage')
-        } else if (Array.prototype.indexOf && supportedHover.indexOf(this.hoverEvent.action) === -1 && displayWarning) {
-          console.warn('ChatMessage parsed with unsupported hoverEvent', this.hoverEvent.action)
+        } else if (!supportedHover.includes(this.hoverEvent.action)) {
+          this.warn('ChatMessage parsed with unsupported hoverEvent', this.hoverEvent.action)
         }
         // Special case
         if (this.hoverEvent.action === 'show_item') {
@@ -226,7 +228,7 @@ function loader (registryOrVersion) {
           try {
             this.hoverEvent.value = mojangson.parse(content)
           } catch (err) {
-
+            debug(err)
           }
         }
       }
@@ -302,8 +304,7 @@ function loader (registryOrVersion) {
         const _with = this.with ?? []
 
         const args = _with.map(entry => entry.toString(lang))
-        const format = lang[this.translate] ?? this.translate
-
+        const format = getValueSafely(lang, this.translate, this.translate)
         message += vsprintf(format, args)
       }
       if (this.extra) {
@@ -355,7 +356,7 @@ function loader (registryOrVersion) {
         return codes[code]
       }).join('')
 
-      if ((typeof this.text === 'string' || typeof this.text === 'number')/* && this.text !== '' */) message += this.text
+      if ((typeof this.text === 'string') || (typeof this.text === 'number')) message += this.text
       else if (this.translate !== undefined) {
         const _with = this.with ?? []
 
@@ -363,8 +364,7 @@ function loader (registryOrVersion) {
           const entryAsMotd = entry.toMotd(lang, this)
           return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
         })
-        const format = lang[this.translate] ?? this.translate
-
+        const format = getValueSafely(lang, this.translate, this.translate)
         message += vsprintf(format, args)
       }
       if (this.extra) {
@@ -416,7 +416,7 @@ function loader (registryOrVersion) {
             params.push(param.toHTML(lang, styles, allowedFormats))
           }
         }
-        const format = lang[this.translate] ?? this.translate
+        const format = getValueSafely(lang, this.translate, this.translate)
         str += vsprintf(escapeHtml(format), params)
       }
 
@@ -442,8 +442,9 @@ function loader (registryOrVersion) {
     // For example,
     //  printf("<%s> %s" /* fmt string */, [sender], [content])
     static fromNetwork (type, params) {
-      const format = registry.chatFormattingById[type]
-      return new ChatMessage({ translate: format.formatString, with: format.parameters.map(p => params[p]) })
+      const format = getValueSafely(registry.chatFormattingById, type)
+      if (!format) throw new Error('unknown chat format code: ' + type) // The server may be attempting to send a chat message before sending a login codec, which is not allowed
+      return new ChatMessage({ translate: format.formatString, with: format.parameters.map(p => getValueSafely(params, p, '')) })
     }
   }
 
