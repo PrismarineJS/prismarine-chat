@@ -3,7 +3,7 @@ const vsprintf = require('./format')
 const debug = require('debug')('minecraft-protocol')
 
 module.exports = loader
-const getValueSafely = (obj, key, def) => Object.keys(obj).includes(key) ? obj[key] : def
+const getValueSafely = (obj, key, def) => Object.keys(obj).includes(String(key)) ? obj[key] : def
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
@@ -443,7 +443,7 @@ function loader (registryOrVersion) {
     //  printf("<%s> %s" /* fmt string */, [sender], [content])
     static fromNetwork (type, params) {
       const format = getValueSafely(registry.chatFormattingById, type)
-      if (!format) throw new Error('unknown chat format code: ' + type) // The server may be attempting to send a chat message before sending a login codec, which is not allowed
+      if (format == null) throw new Error('unknown chat format code: ' + type) // The server may be attempting to send a chat message before sending a login codec, which is not allowed
       return new ChatMessage({ translate: format.formatString, with: format.parameters.map(p => getValueSafely(params, p, '')) })
     }
   }
