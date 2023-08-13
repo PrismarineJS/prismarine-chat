@@ -1,5 +1,12 @@
 ## History
 
+### 1.9.0
+* [Fix unsafe object lookups (#99)](https://github.com/PrismarineJS/prismarine-chat/commit/4536dca23b18b4cc6cbd825ca17e3adbb347cce9) (thanks @extremeheat)
+* [Add command gh workflow allowing to use release command in comments (#98)](https://github.com/PrismarineJS/prismarine-chat/commit/494315fb9d022c83b4041f0ad7f828909fe7ccd0) (thanks @rom1504)
+* [Update to node 18 (#96)](https://github.com/PrismarineJS/prismarine-chat/commit/bc28fe1aeed8246376b3ff720ee9658a29604a14) (thanks @rom1504)
+* [Fix potential issue in toHTML (#95)](https://github.com/PrismarineJS/prismarine-chat/commit/d9a5bc8346291d51dcbe0fd4d3dc612ac741ad50) (thanks @extremeheat)
+* [Add html generator (#94)](https://github.com/PrismarineJS/prismarine-chat/commit/1f19bccbec588b73b0546e783b1e90e11c52be5f) (thanks @extremeheat)
+
 ### 1.8.0
 
 * Better translation handling (@ChipmunkMC)
