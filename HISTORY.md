@@ -1,5 +1,8 @@
 ## History
 
+### 1.9.1
+* [use Object.prototype.hasOwnProperty.call instead of Object.hasOwn (#101)](https://github.com/PrismarineJS/prismarine-chat/commit/3d8b67e1adcaed0c17059d42c02ad645d390b27f) (thanks @extremeheat)
+
 ### 1.9.0
 * [Fix unsafe object lookups (#99)](https://github.com/PrismarineJS/prismarine-chat/commit/4536dca23b18b4cc6cbd825ca17e3adbb347cce9) (thanks @extremeheat)
 * [Add command gh workflow allowing to use release command in comments (#98)](https://github.com/PrismarineJS/prismarine-chat/commit/494315fb9d022c83b4041f0ad7f828909fe7ccd0) (thanks @rom1504)
