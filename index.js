@@ -3,7 +3,7 @@ const vsprintf = require('./format')
 const debug = require('debug')('minecraft-protocol')
 
 module.exports = loader
-const getValueSafely = (obj, key, def) => Object.hasOwn(obj, key) ? obj[key] : def
+const getValueSafely = (obj, key, def) => Object.prototype.hasOwnProperty.call(obj, key) ? obj[key] : def // eslint-disable-line
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
