@@ -429,11 +429,13 @@ function loader (registryOrVersion) {
       if (registry.supportFeature('chatPacketsUseNbtComponents') && msg.type) {
         const msg = processNbtMessage(msg)
         return new ChatMessage(JSON.parse(json))
-      } else try {
-        return new ChatMessage(JSON.parse(msg))
-      } catch (e) {
-        return new ChatMessage(msg)
-      }      
+      } else {
+        try {
+          return new ChatMessage(JSON.parse(msg))
+        } catch (e) {
+          return new ChatMessage(msg)
+        }
+      }
     }
 
     // 1.19 applies chat formatting on the client side. A format string is provided like in C printf
