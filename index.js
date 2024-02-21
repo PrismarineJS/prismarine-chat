@@ -1,9 +1,7 @@
 const mojangson = require('mojangson')
 const vsprintf = require('./format')
 const debug = require('debug')('minecraft-protocol')
-
-module.exports = loader
-const getValueSafely = (obj, key, def) => Object.prototype.hasOwnProperty.call(obj, key) ? obj[key] : def // eslint-disable-line
+const getValueSafely = (obj, key, def) => Object.hasOwn(obj, key) ? obj[key] : def
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
@@ -428,13 +426,14 @@ function loader (registryOrVersion) {
     }
 
     static fromNotch (msg) {
-      let toRet
-      try {
-        toRet = new ChatMessage(JSON.parse(msg))
+      if (registry.supportFeature('chatPacketsUseNbtComponents') && msg.type) {
+        const msg = processNbtMessage(msg)
+        return new ChatMessage(JSON.parse(json))
+      } else try {
+        return new ChatMessage(JSON.parse(msg))
       } catch (e) {
-        toRet = new ChatMessage(msg)
-      }
-      return toRet
+        return new ChatMessage(msg)
+      }      
     }
 
     // 1.19 applies chat formatting on the client side. A format string is provided like in C printf
@@ -443,7 +442,9 @@ function loader (registryOrVersion) {
     //  printf("<%s> %s" /* fmt string */, [sender], [content])
     static fromNetwork (type, params) {
       const format = getValueSafely(registry.chatFormattingById, type)
-      if (format == null) throw new Error('unknown chat format code: ' + type) // The server may be attempting to send a chat message before sending a login codec, which is not allowed
+      if (format == null) {
+        throw new Error('unknown chat format code: ' + type) // Server may be attempting to send a chat message before sending a login codec, which is not allowed
+      }
       return new ChatMessage({ translate: format.formatString, with: format.parameters.map(p => getValueSafely(params, p, '')) })
     }
   }
@@ -451,6 +452,23 @@ function loader (registryOrVersion) {
   ChatMessage.MessageBuilder = MessageBuilder
   return ChatMessage
 }
+
+module.exports = loader
+// mcpc 1.20.3 uses NBT instead of JSON in some places to store chat, so the schema is a bit different
+// processNbtMessage normalizes the JS object obtained from nbt derealization to the old JSON schema
+function uuidFromIntArray (arr) {
+  const buf = Buffer.alloc(16)
+  arr.forEach((num, index) => { buf.writeInt32BE(num, index * 4) })
+  return buf.toString('hex')
+}
+function processNbtMessage (msg) {
+  const simplified = nbt.simplify(msg)
+  const json = JSON.stringify(simplified, (key, val) => {
+    if (key === 'id' && Array.isArray(val)) return uuidFromIntArray(val)
+    return val
+  })
+}
+module.exports.processNbtMessage = processNbtMessage
 
 const escapeHtml = (unsafe) => unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;')
 const escapeRGB = (unsafe) => `color:rgb(${unsafe.match(/.{2}/g).map(e => parseInt(e, 16)).join(',')})`

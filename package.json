@@ -27,11 +27,11 @@
     "expect": "^29.1.0",
     "mocha": "^10.0.0",
     "prismarine-chat": "file:.",
-    "standard": "^17.0.0"
+    "standard": "^17.0.0",
+    "prismarine-item": "^1.10.0"
   },
   "dependencies": {
     "mojangson": "^2.0.1",
-    "prismarine-item": "^1.10.0",
     "prismarine-nbt": "^2.0.0",
     "prismarine-registry": "^1.4.0"
   }
