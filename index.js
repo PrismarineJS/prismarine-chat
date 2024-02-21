@@ -429,7 +429,7 @@ function loader (registryOrVersion) {
     static fromNotch (msg) {
       if (registry.supportFeature('chatPacketsUseNbtComponents') && msg.type) {
         const json = processNbtMessage(msg)
-        return new ChatMessage(JSON.parse(json))
+        return new ChatMessage(json ? JSON.parse(json) : '')
       } else {
         try {
           return new ChatMessage(JSON.parse(msg))
@@ -465,6 +465,7 @@ function uuidFromIntArray (arr) {
   return buf.toString('hex')
 }
 function processNbtMessage (msg) {
+  if (!msg) return null
   const simplified = nbt.simplify(msg)
   const json = JSON.stringify(simplified, (key, val) => {
     if (key === 'id' && Array.isArray(val)) return uuidFromIntArray(val)
