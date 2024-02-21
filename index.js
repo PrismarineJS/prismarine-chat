@@ -1,6 +1,7 @@
 const mojangson = require('mojangson')
 const vsprintf = require('./format')
 const debug = require('debug')('minecraft-protocol')
+const nbt = require('prismarine-nbt')
 const getValueSafely = (obj, key, def) => Object.hasOwn(obj, key) ? obj[key] : def
 
 function loader (registryOrVersion) {
@@ -427,7 +428,7 @@ function loader (registryOrVersion) {
 
     static fromNotch (msg) {
       if (registry.supportFeature('chatPacketsUseNbtComponents') && msg.type) {
-        const msg = processNbtMessage(msg)
+        const json = processNbtMessage(msg)
         return new ChatMessage(JSON.parse(json))
       } else {
         try {
@@ -469,6 +470,7 @@ function processNbtMessage (msg) {
     if (key === 'id' && Array.isArray(val)) return uuidFromIntArray(val)
     return val
   })
+  return json
 }
 module.exports.processNbtMessage = processNbtMessage
 
