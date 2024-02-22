@@ -465,7 +465,7 @@ function uuidFromIntArray (arr) {
   return buf.toString('hex')
 }
 function processNbtMessage (msg) {
-  if (!msg) return null
+  if (!msg || msg.type === 'end') return null
   const simplified = nbt.simplify(msg)
   const json = JSON.stringify(simplified, (key, val) => {
     if (key === 'id' && Array.isArray(val)) return uuidFromIntArray(val)
