@@ -1,5 +1,8 @@
 ## History
 
+### 1.10.0
+* [1.20.3 nbt chat handling (#103)](https://github.com/PrismarineJS/prismarine-chat/commit/1066a76e719c6cfd8c7596ddb3b9d9e624eac413) (thanks @extremeheat)
+
 ### 1.9.1
 * [use Object.prototype.hasOwnProperty.call instead of Object.hasOwn (#101)](https://github.com/PrismarineJS/prismarine-chat/commit/3d8b67e1adcaed0c17059d42c02ad645d390b27f) (thanks @extremeheat)
 
