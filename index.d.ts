@@ -1,5 +1,3 @@
-declare const loader: (registryOrVersion: string) => typeof ChatMessage
-
 declare class ChatMessage {
   // for export
   static MessageBuilder: typeof MessageBuilder
@@ -201,11 +199,6 @@ declare class MessageBuilder {
   static fromNetwork (messageType: number, parameters: Record<string, Object>): MessageBuilder
 }
 
-export default loader
-export {
-  ChatMessage
-}
-
 type Language = { [key: string]: string }
 
 type Color =
@@ -232,3 +225,14 @@ type Color =
   | "italic"
   | "reset"
 type DefaultFormats = 'color' | 'bold' | 'strikethrough' | 'underlined' | 'italic'
+
+// mcpc 1.20.3 uses NBT instead of JSON in some places to store chat, so the schema is a bit different
+// processNbtMessage normalizes the JS object obtained from nbt derealization to the old JSON schema
+function processNbtMessage(parsedNbtObject)
+
+declare const loader: (registryOrVersion: string) => typeof ChatMessage
+export default loader
+export {
+  ChatMessage,
+  processNbtMessage
+}

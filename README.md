@@ -116,3 +116,11 @@ runs `JSON.stringify()` on `this`
 
 #### static MessageBuilder.fromString(str, {colorSeparator = '&'}) : MessageBuilder
 convert string with color codes like `&4Hello&cWorld` to a `MessageBuilder` object
+
+### processNbtMessage
+
+This method is internally called by fromNotch.
+
+mcpc 1.20.3 uses NBT instead of JSON in some places to store chat, so the schema is a bit different.
+`processNbtMessage` normalizes the JS object obtained from nbt derealization to the old JSON schema,
+so it can be used to instantiate a ChatMessage.
