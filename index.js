@@ -3,6 +3,8 @@ const vsprintf = require('./format')
 const debug = require('debug')('minecraft-protocol')
 const nbt = require('prismarine-nbt')
 const getValueSafely = (obj, key, def) => Object.hasOwn(obj, key) ? obj[key] : def
+const MAX_CHAT_DEPTH = 8
+const MAX_CHAT_LENGTH = 4096
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
@@ -296,27 +298,29 @@ function loader (registryOrVersion) {
      * Flattens the message in to plain-text
      * @return {String}
      */
-    toString (lang = defaultLang) {
+    toString (lang = defaultLang, _depth = 0) {
+      if (_depth > MAX_CHAT_DEPTH) return ''
       let message = ''
       if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
       else if (this.translate !== undefined) {
         const _with = this.with ?? []
 
-        const args = _with.map(entry => entry.toString(lang))
+        const args = _with.map(entry => entry.toString(lang, _depth + 1))
         const format = getValueSafely(lang, this.translate, this.translate)
         message += vsprintf(format, args)
       }
       if (this.extra) {
-        message += this.extra.map((entry) => entry.toString(lang)).join('')
+        message += this.extra.map((entry) => entry.toString(lang, _depth + 1)).join('')
       }
-      return message.replace(/§[0-9a-flnmokr]/g, '')
+      return message.replace(/§[0-9a-flnmokr]/g, '').slice(0, MAX_CHAT_LENGTH)
     }
 
     valueOf () {
       return this.toString()
     }
 
-    toMotd (lang = defaultLang, parent = {}) {
+    toMotd (lang = defaultLang, parent = {}, _depth = 0) {
+      if (_depth > MAX_CHAT_DEPTH) return ''
       const codes = {
         color: {
           black: '§0',
@@ -360,16 +364,16 @@ function loader (registryOrVersion) {
         const _with = this.with ?? []
 
         const args = _with.map(entry => {
-          const entryAsMotd = entry.toMotd(lang, this)
+          const entryAsMotd = entry.toMotd(lang, this, _depth + 1)
           return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
         })
         const format = getValueSafely(lang, this.translate, this.translate)
         message += vsprintf(format, args)
       }
       if (this.extra) {
-        message += this.extra.map(entry => entry.toMotd(lang, this)).join('')
+        message += this.extra.map(entry => entry.toMotd(lang, this, _depth + 1)).join('')
       }
-      return message
+      return message.slice(0, MAX_CHAT_LENGTH)
     }
 
     toAnsi (lang = defaultLang, codes = defaultAnsiCodes) {
@@ -388,11 +392,12 @@ function loader (registryOrVersion) {
         // ANSI from https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#rgb-colors
         message = message.replace(hexRegex, `\u001b[38;2;${red};${green};${blue}m`)
       }
-      return codes['§r'] + message + codes['§r']
+      return codes['§r'] + message.slice(0, MAX_CHAT_LENGTH) + codes['§r']
     }
 
     // NOTE : Have to be be mindful here as bad HTML gen may lead to arbitrary code execution from server
-    toHTML (lang = registry.language, styles = cssDefaultStyles, allowedFormats = formatMembers) {
+    toHTML (lang = registry.language, styles = cssDefaultStyles, allowedFormats = formatMembers, _depth = 0) {
+      if (_depth > MAX_CHAT_DEPTH) return ''
       let str = ''
       if (allowedFormats.some(member => this[member])) {
         const cssProps = allowedFormats.reduce((acc, cur) => this[cur]
@@ -412,7 +417,7 @@ function loader (registryOrVersion) {
         const params = []
         if (this.with) {
           for (const param of this.with) {
-            params.push(param.toHTML(lang, styles, allowedFormats))
+            params.push(param.toHTML(lang, styles, allowedFormats, _depth))
           }
         }
         const format = getValueSafely(lang, this.translate, this.translate)
@@ -420,10 +425,13 @@ function loader (registryOrVersion) {
       }
 
       if (this.extra) {
-        str += this.extra.map(entry => entry.toHTML(lang, styles, allowedFormats)).join('')
+        str += this.extra.map(entry => entry.toHTML(lang, styles, allowedFormats, _depth)).join('')
       }
       str += '</span>'
-      return str
+      // It's not safe to truncate HTML so just return unformatted text
+      return str > MAX_CHAT_LENGTH
+        ? escapeHtml(this.toString())
+        : str
     }
 
     static fromNotch (msg) {
