@@ -417,7 +417,7 @@ function loader (registryOrVersion) {
         const params = []
         if (this.with) {
           for (const param of this.with) {
-            params.push(param.toHTML(lang, styles, allowedFormats, _depth))
+            params.push(param.toHTML(lang, styles, allowedFormats, _depth + 1))
           }
         }
         const format = getValueSafely(lang, this.translate, this.translate)
@@ -425,7 +425,7 @@ function loader (registryOrVersion) {
       }
 
       if (this.extra) {
-        str += this.extra.map(entry => entry.toHTML(lang, styles, allowedFormats, _depth)).join('')
+        str += this.extra.map(entry => entry.toHTML(lang, styles, allowedFormats, _depth + 1)).join('')
       }
       str += '</span>'
       // It's not safe to truncate HTML so just return unformatted text
