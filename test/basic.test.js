@@ -126,3 +126,31 @@ describe('Client-side chat formatting', function () {
     assert.strictEqual(msg.toString(), '💬 [Admin] Player » hello world ! ⏎')
   })
 })
+
+describe('Big message parsing', function () {
+  const ChatMessage = require('prismarine-chat')('1.16')
+  const translate = '%1$s'.repeat(32)
+  const format = {
+    text: 'a',
+    color: 'dark_red',
+    bold: true,
+    italic: true,
+    strikethrough: true,
+    underlined: true,
+    obfuscated: true
+  }
+  it('handles big messages', function () {
+    const _with = [format]
+    const big = { translate, with: _with }
+    for (let i = 0; i < 7; i++) _with[0] = structuredClone(big)
+    const message = new ChatMessage(big)
+    assert.strictEqual(message.toString().length, 4096)
+  })
+  it('handles too deep messages', function () {
+    const _with = [format]
+    const big = { translate, with: _with }
+    for (let i = 0; i < 10; i++) _with[0] = structuredClone(big)
+    const message = new ChatMessage(big)
+    assert.strictEqual(message.toString().length, 0)
+  })
+})
