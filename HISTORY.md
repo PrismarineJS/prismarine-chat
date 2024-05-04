@@ -1,5 +1,8 @@
 ## History
 
+### 1.10.1
+* [Handle big and deep messages (#107)](https://github.com/PrismarineJS/prismarine-chat/commit/c990ba8017ab7d79738d54281d7355da0b5ac235) (thanks @extremeheat)
+
 ### 1.10.0
 * [1.20.3 nbt chat handling (#103)](https://github.com/PrismarineJS/prismarine-chat/commit/1066a76e719c6cfd8c7596ddb3b9d9e624eac413) (thanks @extremeheat)
 
