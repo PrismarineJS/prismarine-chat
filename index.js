@@ -429,7 +429,7 @@ function loader (registryOrVersion) {
       }
       str += '</span>'
       // It's not safe to truncate HTML so just return unformatted text
-      return str > MAX_CHAT_LENGTH
+      return str.length > MAX_CHAT_LENGTH
         ? escapeHtml(this.toString())
         : str
     }
