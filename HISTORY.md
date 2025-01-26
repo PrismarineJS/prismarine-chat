@@ -1,5 +1,9 @@
 ## History
 
+### 1.11.0
+* [Bump mocha from 10.8.2 to 11.0.1 (#116)](https://github.com/PrismarineJS/prismarine-chat/commit/0168f676fe890b3cd5fc5d22502138c215cf72eb) (thanks @dependabot[bot])
+* [fix toHTML length check](https://github.com/PrismarineJS/prismarine-chat/commit/17fe55e16e53b1010e3e6c5ccaa14c0f9441e259) (thanks @extremeheat)
+
 ### 1.10.1
 * [Handle big and deep messages (#107)](https://github.com/PrismarineJS/prismarine-chat/commit/c990ba8017ab7d79738d54281d7355da0b5ac235) (thanks @extremeheat)
 
