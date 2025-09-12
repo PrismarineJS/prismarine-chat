@@ -159,20 +159,19 @@ describe('NBT chat messages with empty string keys', function () {
   const ChatMessage = require('prismarine-chat')('1.16')
 
   it('should parse message parts with empty string keys correctly', function () {
-    // This replicates the exact structure from the issue description
     const nbtMessage = {
       extra: [
         {
           color: '#ff471a',
           text: 'Ⓖ '
         },
-        { '': '[' }, // Empty string key with text content
+        { '': '[' },
         {
           color: '#5cff62',
           text: 'Игрок'
         },
-        { '': '] ' }, // Empty string key with text content
-        { '': '6055_42 ' }, // Empty string key with text content
+        { '': '] ' },
+        { '': '6055_42 ' },
         {
           color: 'gray',
           text: ' ⇨'
@@ -185,12 +184,8 @@ describe('NBT chat messages with empty string keys', function () {
       ],
       text: ''
     }
-
     const msg = new ChatMessage(nbtMessage)
     const result = msg.toString()
-
-    // The current behavior (broken) would be: "Ⓖ Игрок ⇨ Test message"
-    // The expected behavior should include the brackets and "6055_42"
     expect(result).toBe('Ⓖ [Игрок] 6055_42  ⇨ Test message')
   })
 })
