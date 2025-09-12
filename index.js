@@ -96,6 +96,9 @@ function loader (registryOrVersion) {
       // HOWEVER! If there is a translate property, there may not be a with property
       if (typeof json.text === 'string' || typeof json.text === 'number') {
         this.text = json.text
+      } else if (typeof json[''] === 'string' || typeof json[''] === 'number') {
+        // Handle NBT messages with empty string keys
+        this.text = json['']
       } else if (typeof json.translate === 'string') {
         this.translate = json.translate
         if (typeof json.with === 'object') {
