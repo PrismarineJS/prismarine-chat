@@ -98,6 +98,9 @@ function loader (registryOrVersion) {
         this.text = json.text
       } else if (typeof json.translate === 'string') {
         this.translate = json.translate
+        if (typeof json.fallback === 'string') {
+          this.fallback = json.fallback
+        }
         if (typeof json.with === 'object') {
           if (!Array.isArray(json.with)) {
             throw new Error('Expected with property to be an Array in ChatMessage')
@@ -306,7 +309,17 @@ function loader (registryOrVersion) {
         const _with = this.with ?? []
 
         const args = _with.map(entry => entry.toString(lang, _depth + 1))
-        const format = getValueSafely(lang, this.translate, this.translate)
+        let format = getValueSafely(lang, this.translate, null)
+
+        // If translation not found and fallback exists, use fallback
+        if (format === null && this.fallback !== undefined) {
+          format = this.fallback
+        }
+        // If still no format, use the translate key as fallback (original behavior)
+        if (format === null) {
+          format = this.translate
+        }
+
         message += vsprintf(format, args)
       }
       if (this.extra) {
@@ -367,7 +380,17 @@ function loader (registryOrVersion) {
           const entryAsMotd = entry.toMotd(lang, this, _depth + 1)
           return entryAsMotd + (entryAsMotd.includes('§') ? '§r' + message : '')
         })
-        const format = getValueSafely(lang, this.translate, this.translate)
+        let format = getValueSafely(lang, this.translate, null)
+
+        // If translation not found and fallback exists, use fallback
+        if (format === null && this.fallback !== undefined) {
+          format = this.fallback
+        }
+        // If still no format, use the translate key as fallback (original behavior)
+        if (format === null) {
+          format = this.translate
+        }
+
         message += vsprintf(format, args)
       }
       if (this.extra) {
@@ -420,7 +443,17 @@ function loader (registryOrVersion) {
             params.push(param.toHTML(lang, styles, allowedFormats, _depth + 1))
           }
         }
-        const format = getValueSafely(lang, this.translate, this.translate)
+        let format = getValueSafely(lang, this.translate, null)
+
+        // If translation not found and fallback exists, use fallback
+        if (format === null && this.fallback !== undefined) {
+          format = this.fallback
+        }
+        // If still no format, use the translate key as fallback (original behavior)
+        if (format === null) {
+          format = this.translate
+        }
+
         str += vsprintf(escapeHtml(format), params)
       }
 
