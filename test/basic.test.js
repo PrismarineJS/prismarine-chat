@@ -101,6 +101,34 @@ describe('Parsing chat on 1.16', function () {
     assert.strictEqual(msg.toHTML(), '<span style="color:#5555FF">&lt;<span style="color:#55FFFF">IM_U9G</span>&gt; <span style="color:#55FF55">yo sup</span><span style="color:rgb(255,0,0);text-decoration:line-through">test</span></span>')
     assert.strictEqual(msg.toHTML(undefined, undefined, ['color']), '<span style="color:#5555FF">&lt;<span style="color:#55FFFF">IM_U9G</span>&gt; <span style="color:#55FF55">yo sup</span><span style="color:rgb(255,0,0)">test</span></span>')
   })
+
+  it('Parsing a translate message with fallback when translation exists', () => {
+    const msg = new ChatMessage({ translate: 'chat.type.text', fallback: 'fallback text', with: ['Player', 'Hello'] })
+    expect(msg.toString()).toBe('<Player> Hello')
+  })
+
+  it('Parsing a translate message with fallback when translation does not exist', () => {
+    const msg = new ChatMessage({ translate: 'non.existent.key', fallback: 'fallback text' })
+    expect(msg.toString()).toBe('fallback text')
+  })
+
+  it('Parsing a translate message with fallback and with parameters when translation does not exist', () => {
+    const msg = new ChatMessage({ translate: 'non.existent.key', fallback: 'Hello %s!', with: ['World'] })
+    expect(msg.toString()).toBe('Hello World!')
+  })
+
+  it('Fallback works with different output formats', () => {
+    const msg = new ChatMessage({ translate: 'non.existent.key', fallback: 'fallback text', color: 'red' })
+    expect(msg.toString()).toBe('fallback text')
+    expect(msg.toMotd()).toBe('§cfallback text')
+    expect(msg.toAnsi()).toBe('\u001b[0m\u001b[91mfallback text\u001b[0m')
+    expect(msg.toHTML()).toBe('<span style="color:#FF5555">fallback text</span>')
+  })
+
+  it('Fallback is ignored when text property is present', () => {
+    const msg = new ChatMessage({ text: 'main text', fallback: 'fallback text' })
+    expect(msg.toString()).toBe('main text')
+  })
 })
 
 describe('Client-side chat formatting', function () {
