@@ -182,3 +182,38 @@ describe('Big message parsing', function () {
     assert.strictEqual(message.toString().length, 0)
   })
 })
+
+describe('NBT chat messages with empty string keys', function () {
+  const ChatMessage = require('prismarine-chat')('1.16')
+
+  it('should parse message parts with empty string keys correctly', function () {
+    const nbtMessage = {
+      extra: [
+        {
+          color: '#ff471a',
+          text: 'Ⓖ '
+        },
+        { '': '[' },
+        {
+          color: '#5cff62',
+          text: 'Игрок'
+        },
+        { '': '] ' },
+        { '': '6055_42 ' },
+        {
+          color: 'gray',
+          text: ' ⇨'
+        },
+        {
+          color: '#d8d8d8',
+          text: ' Test message',
+          italic: true
+        }
+      ],
+      text: ''
+    }
+    const msg = new ChatMessage(nbtMessage)
+    const result = msg.toString()
+    expect(result).toBe('Ⓖ [Игрок] 6055_42  ⇨ Test message')
+  })
+})
