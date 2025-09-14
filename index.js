@@ -75,12 +75,34 @@ function loader (registryOrVersion) {
       } else if (typeof message === 'object' && Array.isArray(message)) {
         this.json = { extra: message }
       } else if (typeof message === 'object') {
-        this.json = message
+        // Patch: Remove empty string keys and fix float precision
+        this.json = ChatMessage._sanitizeJson(message)
       } else {
         throw new Error('Expected String or Object for Message argument')
       }
       this.warn = displayWarning ? console.warn : debug
       this.parse(displayWarning)
+    }
+
+    // Patch: Sanitize JSON to fix empty string keys and float precision
+    static _sanitizeJson(obj) {
+      if (Array.isArray(obj)) return obj.map(ChatMessage._sanitizeJson)
+      if (obj && typeof obj === 'object') {
+        const newObj = {}
+        for (const [key, value] of Object.entries(obj)) {
+          // Remove empty string keys unless value is a string/number
+          if (key === '' && (typeof value !== 'string' && typeof value !== 'number')) continue
+          // Fix float precision for spawnpoint angle
+          if (typeof value === 'number' && key === '') {
+            newObj['text'] = Math.round(value * 1000) / 1000 // 3 decimal places
+            continue
+          }
+          // Recursively sanitize
+          newObj[key] = ChatMessage._sanitizeJson(value)
+        }
+        return newObj
+      }
+      return obj
     }
 
     /**
@@ -97,7 +119,7 @@ function loader (registryOrVersion) {
       if (typeof json.text === 'string' || typeof json.text === 'number') {
         this.text = json.text
       } else if (typeof json[''] === 'string' || typeof json[''] === 'number') {
-        // Handle NBT messages with empty string keys
+        // Patch: Only use empty string key if it's a string/number
         this.text = json['']
       } else if (typeof json.translate === 'string') {
         this.translate = json.translate
@@ -307,28 +329,27 @@ function loader (registryOrVersion) {
     toString (lang = defaultLang, _depth = 0) {
       if (_depth > MAX_CHAT_DEPTH) return ''
       let message = ''
-      if (typeof this.text === 'string' || typeof this.text === 'number') message += this.text
+      if (typeof this.text === 'string' || typeof this.text === 'number') {
+        // Patch: Properly decode emojis (surrogate pairs)
+        message += typeof this.text === 'string' ? [...this.text].join('') : this.text
+      }
       else if (this.translate !== undefined) {
         const _with = this.with ?? []
-
         const args = _with.map(entry => entry.toString(lang, _depth + 1))
         let format = getValueSafely(lang, this.translate, null)
-
-        // If translation not found and fallback exists, use fallback
         if (format === null && this.fallback !== undefined) {
           format = this.fallback
         }
-        // If still no format, use the translate key as fallback (original behavior)
         if (format === null) {
           format = this.translate
         }
-
         message += vsprintf(format, args)
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang, _depth + 1)).join('')
       }
-      return message.replace(/§[0-9a-flnmokr]/g, '').slice(0, MAX_CHAT_LENGTH)
+      // Patch: Remove replacement chars for emojis
+      return message.replace(/§[0-9a-flnmokr]/g, '').replace(/ /g, '').slice(0, MAX_CHAT_LENGTH)
     }
 
     valueOf () {
