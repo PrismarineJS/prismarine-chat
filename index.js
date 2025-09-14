@@ -85,7 +85,7 @@ function loader (registryOrVersion) {
     }
 
     // Patch: Sanitize JSON to fix empty string keys and float precision
-    static _sanitizeJson(obj) {
+    static _sanitizeJson (obj) {
       if (Array.isArray(obj)) return obj.map(ChatMessage._sanitizeJson)
       if (obj && typeof obj === 'object') {
         const newObj = {}
@@ -94,7 +94,7 @@ function loader (registryOrVersion) {
           if (key === '' && (typeof value !== 'string' && typeof value !== 'number')) continue
           // Fix float precision for spawnpoint angle
           if (typeof value === 'number' && key === '') {
-            newObj['text'] = Math.round(value * 1000) / 1000 // 3 decimal places
+            newObj.text = Math.round(value * 1000) / 1000 // 3 decimal places
             continue
           }
           // Recursively sanitize
@@ -332,8 +332,7 @@ function loader (registryOrVersion) {
       if (typeof this.text === 'string' || typeof this.text === 'number') {
         // Patch: Properly decode emojis (surrogate pairs)
         message += typeof this.text === 'string' ? [...this.text].join('') : this.text
-      }
-      else if (this.translate !== undefined) {
+      } else if (this.translate !== undefined) {
         const _with = this.with ?? []
         const args = _with.map(entry => entry.toString(lang, _depth + 1))
         let format = getValueSafely(lang, this.translate, null)
@@ -349,7 +348,7 @@ function loader (registryOrVersion) {
         message += this.extra.map((entry) => entry.toString(lang, _depth + 1)).join('')
       }
       // Patch: Remove replacement chars for emojis
-      return message.replace(/§[0-9a-flnmokr]/g, '').replace(/ /g, '').slice(0, MAX_CHAT_LENGTH)
+      return message.replace(/§[0-9a-flnmokr]/g, '').slice(0, MAX_CHAT_LENGTH)
     }
 
     valueOf () {

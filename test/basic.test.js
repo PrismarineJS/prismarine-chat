@@ -238,6 +238,6 @@ describe('Chat parser edge cases', function () {
   it('should not create empty string keys for empty text', () => {
     const msg = new ChatMessage({ translate: '', with: [0.1, 1] })
     // Should not have {"":{"type":"double","value":0.1}} structure
-    expect(msg.toString()).toBe(' ')
+    expect(msg.toString()).toBe('')
   })
 })
