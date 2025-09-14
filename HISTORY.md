@@ -1,5 +1,10 @@
 ## History
 
+### 1.12.0
+* [Fix parsing of NBT chat messages with empty string keys (#129)](https://github.com/PrismarineJS/prismarine-chat/commit/87d287a31f0d953e1712b465644a8274feac30c8) (thanks @Copilot)
+* [Add support for `fallback` property in translatable chat components (#127)](https://github.com/PrismarineJS/prismarine-chat/commit/e2bf743fa93ddd7c16aa48b186345ab258a4253c) (thanks @Copilot)
+* [Bump expect from 29.7.0 to 30.1.2 (#126)](https://github.com/PrismarineJS/prismarine-chat/commit/bc799657fd8fb38ae12de642e305dd79f9d510a0) (thanks @dependabot[bot])
+
 ### 1.11.0
 * [Bump mocha from 10.8.2 to 11.0.1 (#116)](https://github.com/PrismarineJS/prismarine-chat/commit/0168f676fe890b3cd5fc5d22502138c215cf72eb) (thanks @dependabot[bot])
 * [fix toHTML length check](https://github.com/PrismarineJS/prismarine-chat/commit/17fe55e16e53b1010e3e6c5ccaa14c0f9441e259) (thanks @extremeheat)
