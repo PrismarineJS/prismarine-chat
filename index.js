@@ -348,7 +348,7 @@ function loader (registryOrVersion) {
         message += this.extra.map((entry) => entry.toString(lang, _depth + 1)).join('')
       }
       // Patch: Remove replacement chars for emojis
-      return message.replace(/§[0-9a-flnmokr]/g, '').slice(0, MAX_CHAT_LENGTH)
+      return message.replace(/§[0-9a-flnmokr]/g, '').replace(/\0/g, '').slice(0, MAX_CHAT_LENGTH)
     }
 
     valueOf () {
