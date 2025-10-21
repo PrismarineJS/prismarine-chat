@@ -217,3 +217,27 @@ describe('NBT chat messages with empty string keys', function () {
     expect(result).toBe('Ⓖ [Игрок] 6055_42  ⇨ Test message')
   })
 })
+
+describe('Chat parser edge cases', function () {
+  const ChatMessage = require('prismarine-chat')('1.20.4')
+
+  it('should handle emojis outside BMP', () => {
+    // Emoji: U+1F32B (🌫)
+    const msg = new ChatMessage({ text: '🌫' })
+    expect(msg.toString()).toBe('🌫')
+  })
+
+  it('should handle spawnpoint angle float precision', () => {
+    // Simulate NBT message with empty string key and float value
+    const msg = new ChatMessage({ '': 0.10000000149011612 })
+    expect(msg.toString()).toBe('0.1')
+    const msg2 = new ChatMessage({ '': 0.0 })
+    expect(msg2.toString()).toBe('0')
+  })
+
+  it('should not create empty string keys for empty text', () => {
+    const msg = new ChatMessage({ translate: '', with: [0.1, 1] })
+    // Should not have {"":{"type":"double","value":0.1}} structure
+    expect(msg.toString()).toBe('')
+  })
+})
