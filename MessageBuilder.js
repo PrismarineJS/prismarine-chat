@@ -65,6 +65,13 @@ function loader (registry) {
      */
     setInsertion (val) { this.insertion = val; return this }
     /**
+     * A selector string (@p, @a, @s, etc) which is resolved on the client side.
+     * @param {string} val
+     * @example
+     * builder.setSelector('@p')
+     */
+    setSelector (val) { this.selector = val; return this }
+    /**
      * Overrode by .setText()
      * @param {string} val
      * @example
@@ -191,8 +198,10 @@ function loader (registry) {
       if (isDef(this.color)) obj.color = this.color
       if (isDef(this.bold)) obj.bold = this.bold
       if (isDef(this.font)) obj.font = this.font
-      if (isDef(this.text)) { // text > keybind > score
+      if (isDef(this.text)) { // text > selector > keybind > score
         obj.text = this.text
+      } else if (isDef(this.selector)) {
+        obj.selector = this.selector
       } else if (isDef(this.keybind)) {
         obj.keybind = this.keybind
       } else if (isDef(this.score)) {

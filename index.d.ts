@@ -28,6 +28,12 @@ declare class ChatMessage {
   extra?: Array<ChatMessage>
 
   translate?: string
+  
+  selector?: string
+  
+  keybind?: string
+  
+  score?: { name: string; objective: string }
 
   /**
    * Flattens the message into plain-text, without style.
@@ -87,6 +93,7 @@ declare class MessageBuilder {
   font?: string
   translate?: string
   insertion?: string
+  selector?: string
   keybind?: string
   score?: { name: string; objective: string }
   clickEvent?: object
@@ -121,6 +128,13 @@ declare class MessageBuilder {
    * text shown when shift clicked on message
    */
   setInsertion(val: string): this
+
+  /**
+   * A selector string (@p, @a, @s, etc) which is resolved on the client side.
+   * @example
+   * builder.setSelector('@p')
+   */
+  setSelector(val: string): this
 
   /**
    * Overrode by .setText()
