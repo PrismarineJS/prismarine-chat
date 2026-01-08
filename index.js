@@ -110,6 +110,15 @@ function loader (registryOrVersion) {
           }
           this.with = json.with.map(entry => new ChatMessage(entry))
         }
+      } else if (typeof json.selector === 'string') {
+        // Handle selector (e.g., @p, @a, @s)
+        this.selector = json.selector
+      } else if (typeof json.keybind === 'string') {
+        // Handle keybind (e.g., key.inventory)
+        this.keybind = json.keybind
+      } else if (typeof json.score === 'object') {
+        // Handle score display
+        this.score = json.score
       }
       // Parse extra property
       // Extras are appended to the initial text
@@ -324,6 +333,15 @@ function loader (registryOrVersion) {
         }
 
         message += vsprintf(format, args)
+      } else if (this.selector !== undefined) {
+        // Render selector as-is since we can't resolve it without server context
+        message += this.selector
+      } else if (this.keybind !== undefined) {
+        // Render keybind as-is since we can't resolve it without client context
+        message += this.keybind
+      } else if (this.score !== undefined) {
+        // Render score as placeholder since we can't resolve it without server context
+        message += `<score:${this.score.name}:${this.score.objective}>`
       }
       if (this.extra) {
         message += this.extra.map((entry) => entry.toString(lang, _depth + 1)).join('')
@@ -395,6 +413,12 @@ function loader (registryOrVersion) {
         }
 
         message += vsprintf(format, args)
+      } else if (this.selector !== undefined) {
+        message += this.selector
+      } else if (this.keybind !== undefined) {
+        message += this.keybind
+      } else if (this.score !== undefined) {
+        message += `<score:${this.score.name}:${this.score.objective}>`
       }
       if (this.extra) {
         message += this.extra.map(entry => entry.toMotd(lang, this, _depth + 1)).join('')
@@ -458,6 +482,12 @@ function loader (registryOrVersion) {
         }
 
         str += vsprintf(escapeHtml(format), params)
+      } else if (this.selector) {
+        str += escapeHtml(this.selector)
+      } else if (this.keybind) {
+        str += escapeHtml(this.keybind)
+      } else if (this.score) {
+        str += escapeHtml(`<score:${this.score.name}:${this.score.objective}>`)
       }
 
       if (this.extra) {
