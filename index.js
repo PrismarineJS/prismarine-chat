@@ -116,7 +116,7 @@ function loader (registryOrVersion) {
       } else if (typeof json.keybind === 'string') {
         // Handle keybind (e.g., key.inventory)
         this.keybind = json.keybind
-      } else if (typeof json.score === 'object') {
+      } else if (typeof json.score === 'object' && json.score !== null) {
         // Handle score display
         this.score = json.score
       }
@@ -339,7 +339,7 @@ function loader (registryOrVersion) {
       } else if (this.keybind !== undefined) {
         // Render keybind as-is since we can't resolve it without client context
         message += this.keybind
-      } else if (this.score !== undefined) {
+      } else if (this.score !== undefined && this.score.name && this.score.objective) {
         // Render score as placeholder since we can't resolve it without server context
         message += `<score:${this.score.name}:${this.score.objective}>`
       }
@@ -417,7 +417,7 @@ function loader (registryOrVersion) {
         message += this.selector
       } else if (this.keybind !== undefined) {
         message += this.keybind
-      } else if (this.score !== undefined) {
+      } else if (this.score !== undefined && this.score.name && this.score.objective) {
         message += `<score:${this.score.name}:${this.score.objective}>`
       }
       if (this.extra) {
@@ -486,7 +486,7 @@ function loader (registryOrVersion) {
         str += escapeHtml(this.selector)
       } else if (this.keybind) {
         str += escapeHtml(this.keybind)
-      } else if (this.score) {
+      } else if (this.score && this.score.name && this.score.objective) {
         str += escapeHtml(`<score:${this.score.name}:${this.score.objective}>`)
       }
 

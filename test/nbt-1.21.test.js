@@ -184,4 +184,27 @@ describe('NBT chat messages on 1.21', function () {
     const msg = new ChatMessage(jsonMessage)
     expect(msg.toString()).toBe('Player score: <score:player1:deaths>')
   })
+
+  it('should handle score with missing properties gracefully', function () {
+    // Test score with missing name
+    const msg1 = new ChatMessage({
+      text: 'Score: ',
+      extra: [{ score: { objective: 'deaths' } }]
+    })
+    expect(msg1.toString()).toBe('Score: ')
+
+    // Test score with missing objective
+    const msg2 = new ChatMessage({
+      text: 'Score: ',
+      extra: [{ score: { name: 'player1' } }]
+    })
+    expect(msg2.toString()).toBe('Score: ')
+
+    // Test score as null
+    const msg3 = new ChatMessage({
+      text: 'Score: ',
+      extra: [{ score: null }]
+    })
+    expect(msg3.toString()).toBe('Score: ')
+  })
 })
