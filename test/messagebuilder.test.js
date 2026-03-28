@@ -17,7 +17,9 @@ describe('MessageBuilder', () => {
         ['Text', 'this is a chat message'],
         ['Font', 'minecraft:not_default'],
         ['Translate', 'chat.type.text'],
-        ['Insertion', "Hi I'm inserted!"]
+        ['Insertion', "Hi I'm inserted!"],
+        ['Selector', '@p'],
+        ['Keybind', 'key.inventory']
       ]
       for (const [prop, val] of properties) {
         it(`builder#set${prop}`, () => { // ex: builder#setBold
