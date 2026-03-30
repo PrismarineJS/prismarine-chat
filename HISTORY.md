@@ -1,5 +1,13 @@
 ## History
 
+### 1.13.0
+* [Update CI to Node 24 (#136)](https://github.com/PrismarineJS/prismarine-chat/commit/2c816df3adc2b8429098bac71e763d93794f4425) (thanks @rom1504)
+* [Add support for selector, keybind, and score chat component fields (#133)](https://github.com/PrismarineJS/prismarine-chat/commit/ad206c1f8b1bbe3cce4d7057c0cbc60d9823e081) (thanks @Copilot)
+* [Fix chat parser: emoji, spawnpoint angle, empty text field issues (#131)](https://github.com/PrismarineJS/prismarine-chat/commit/1841bfe030a8abb45f053c56d2a5559aebce290d) (thanks @Copilot)
+* [Fix publish condition for npm-publish v4 (#135)](https://github.com/PrismarineJS/prismarine-chat/commit/5187904f7b09b03a00d1bafe47be064b9c346d26) (thanks @rom1504)
+* [Switch to trusted publishing via OIDC (#134)](https://github.com/PrismarineJS/prismarine-chat/commit/46af00d5464fed683572072643acf3c765044ba5) (thanks @rom1504)
+* [Add missing debug dependency](https://github.com/PrismarineJS/prismarine-chat/commit/ed78489435659dcbf7559a3cd95e4ec1174f2586) (thanks @extremeheat)
+
 ### 1.12.0
 * [Fix parsing of NBT chat messages with empty string keys (#129)](https://github.com/PrismarineJS/prismarine-chat/commit/87d287a31f0d953e1712b465644a8274feac30c8) (thanks @Copilot)
 * [Add support for `fallback` property in translatable chat components (#127)](https://github.com/PrismarineJS/prismarine-chat/commit/e2bf743fa93ddd7c16aa48b186345ab258a4253c) (thanks @Copilot)
