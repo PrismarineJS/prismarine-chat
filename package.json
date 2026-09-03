@@ -25,7 +25,7 @@
   "homepage": "https://github.com/PrismarineJS/prismarine-chat#readme",
   "devDependencies": {
     "expect": "^30.1.2",
-    "mocha": "^11.0.1",
+    "mocha": "^12.0.0",
     "prismarine-chat": "file:.",
     "standard": "^17.0.0",
     "prismarine-item": "^1.10.0"
