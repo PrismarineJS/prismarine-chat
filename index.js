@@ -555,7 +555,10 @@ module.exports = loader
 // processNbtMessage normalizes the JS object obtained from nbt derealization to the old JSON schema
 function uuidFromIntArray (arr) {
   const buf = Buffer.alloc(16)
-  arr.forEach((num, index) => { buf.writeInt32BE(num, index * 4) })
+  // A UUID normally arrives as an intArray of 4 ints, but some proxies (e.g. ViaVersion) send it as a
+  // longArray, whose elements prismarine-nbt surfaces as BigInt. Coerce each to a signed 32-bit int so
+  // both encodings produce the same 16-byte value instead of throwing on writeInt32BE(BigInt).
+  arr.forEach((num, index) => { buf.writeInt32BE(Number(BigInt.asIntN(32, BigInt(num))), index * 4) })
   return buf.toString('hex')
 }
 function processNbtMessage (msg) {

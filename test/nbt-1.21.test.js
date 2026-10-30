@@ -141,6 +141,51 @@ describe('NBT chat messages on 1.21', function () {
     expect(result).toBe('<[M] @s> » hello world')
   })
 
+  it('should parse a show_entity hover whose UUID is a longArray (ViaVersion proxies)', function () {
+    const nbtMessage = {
+      type: 'compound',
+      name: '',
+      value: {
+        text: { type: 'string', value: '' },
+        extra: {
+          type: 'list',
+          value: {
+            type: 'compound',
+            value: [
+              {
+                text: { type: 'string', value: 'Steve' },
+                hoverEvent: {
+                  type: 'compound',
+                  value: {
+                    action: { type: 'string', value: 'show_entity' },
+                    contents: {
+                      type: 'compound',
+                      value: {
+                        type: { type: 'string', value: 'minecraft:player' },
+                        // the four int32s of the UUID, sent as longs (BigInt) rather than an intArray
+                        id: { type: 'longArray', value: [1n, 2n, 3n, 4n] },
+                        name: { type: 'string', value: 'Steve' }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+
+    // Must not throw (regression: writeInt32BE used to be handed a BigInt)
+    const msg = ChatMessage.fromNotch(nbtMessage)
+    expect(msg.toString()).toBe('Steve')
+
+    // The longArray normalizes to the same 16-byte hex as the equivalent intArray
+    const { processNbtMessage } = require('prismarine-chat')
+    const json = JSON.parse(processNbtMessage(nbtMessage))
+    expect(json.extra[0].hoverEvent.contents.id).toBe('00000001000000020000000300000004')
+  })
+
   it('should parse JSON message with selector (non-NBT)', function () {
     const jsonMessage = {
       text: '',
